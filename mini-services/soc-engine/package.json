@@ -1,0 +1,13 @@
+{
+  "name": "soc-engine",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CipherMind Sentinel — ML inference engine, incident correlation, replay streamer (REST + socket.io)",
+  "scripts": {
+    "dev": "bun --hot src/index.ts",
+    "start": "bun src/index.ts"
+  },
+  "dependencies": {
+    "socket.io": "^4.8.3"
+  }
+}

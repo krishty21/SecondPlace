@@ -1,0 +1,151 @@
+{
+  "name": "CipherMind Sentinel Detection Engine",
+  "version": "1.0.0",
+  "trained_at": "2026-08-29T13:23:05+0000",
+  "seed": 42,
+  "dataset": {
+    "train_file": "dataset/Training and Testing Sets/UNSW_NB15_training-set.csv",
+    "test_file": "dataset/Training and Testing Sets/UNSW_NB15_testing-set.csv",
+    "train_rows": 175341,
+    "test_rows": 82332
+  },
+  "models": {
+    "binary": {
+      "algorithm": "LightGBM",
+      "rounds": 864,
+      "params": {
+        "objective": "binary",
+        "learning_rate": 0.06,
+        "num_leaves": 96,
+        "min_data_in_leaf": 60,
+        "feature_fraction": 0.85,
+        "bagging_fraction": 0.9,
+        "bagging_freq": 1,
+        "lambda_l2": 1.0,
+        "verbosity": -1,
+        "seed": 42,
+        "deterministic": true,
+        "force_row_wise": true,
+        "num_threads": 2
+      },
+      "artifact": "ml/artifacts/models/binary_lightgbm.json",
+      "calibration": "Platt (OOF-fitted)"
+    },
+    "multiclass": {
+      "algorithm": "LightGBM",
+      "rounds": 102,
+      "classes": [
+        "Analysis",
+        "Backdoor",
+        "DoS",
+        "Exploits",
+        "Fuzzers",
+        "Generic",
+        "Normal",
+        "Reconnaissance",
+        "Shellcode",
+        "Worms"
+      ],
+      "params": {
+        "objective": "multiclass",
+        "num_class": 10,
+        "learning_rate": 0.08,
+        "num_leaves": 64,
+        "min_data_in_leaf": 50,
+        "feature_fraction": 0.85,
+        "bagging_fraction": 0.9,
+        "bagging_freq": 1,
+        "lambda_l2": 1.0,
+        "class_weight": "balanced",
+        "verbosity": -1,
+        "seed": 42,
+        "deterministic": true,
+        "force_row_wise": true,
+        "num_threads": 2
+      },
+      "artifact": "ml/artifacts/models/multiclass_lightgbm.json",
+      "calibration": "Temperature scaling T=1.0035 (OOF-fitted)"
+    },
+    "anomaly": {
+      "algorithm": "IsolationForest (normal-only training)",
+      "trees": 120,
+      "artifact": "ml/artifacts/models/isolation_forest.json"
+    }
+  },
+  "threshold": 0.4599999999999999,
+  "platt": {
+    "a": 0.8151984637961391,
+    "b": -0.044122113782511366
+  },
+  "temperature": 1.0035288108969718,
+  "risk_config": {
+    "weights": {
+      "attack_confidence": 32,
+      "anomaly": 18,
+      "category_severity": 20,
+      "rarity": 8,
+      "uncertainty": 10,
+      "correlation": 12
+    },
+    "category_severity": {
+      "Exploits": 1.0,
+      "Shellcode": 0.95,
+      "Worms": 0.9,
+      "Backdoor": 0.85,
+      "DoS": 0.8,
+      "Reconnaissance": 0.55,
+      "Analysis": 0.6,
+      "Fuzzers": 0.45,
+      "Generic": 0.4,
+      "Normal": 0.05
+    },
+    "severity_bands": {
+      "low": 24,
+      "medium": 49,
+      "high": 74
+    },
+    "correlation_alert_saturation": 8,
+    "uncertainty_formula": "2 * p * (1 - p) * 2  # scaled to [0,1], max at p=0.5",
+    "rarity_weights": {
+      "Analysis": 0.4857133708544556,
+      "Backdoor": 0.5004598099280632,
+      "DoS": 0.2888128343088712,
+      "Exploits": 0.18005701040279293,
+      "Fuzzers": 0.2460485140912223,
+      "Generic": 0.1604558719384603,
+      "Normal": 0.1239238630189008,
+      "Reconnaissance": 0.3057666480132241,
+      "Shellcode": 0.5474133923046016,
+      "Worms": 0.7824850316937417
+    }
+  },
+  "feature_count": 54,
+  "class_mapping": {
+    "Analysis": 0,
+    "Backdoor": 1,
+    "DoS": 2,
+    "Exploits": 3,
+    "Fuzzers": 4,
+    "Generic": 5,
+    "Normal": 6,
+    "Reconnaissance": 7,
+    "Shellcode": 8,
+    "Worms": 9
+  },
+  "metrics_files": [
+    "binary via test_evaluation.json"
+  ],
+  "software": {
+    "python": "3.12.14",
+    "lightgbm": "4.5.0",
+    "scikit-learn": "1.5.2",
+    "numpy": "2.1.3",
+    "shap": "0.52.0"
+  },
+  "artifacts": {
+    "features": "ml/artifacts/preprocessor/feature_config.json",
+    "clustering": "ml/artifacts/preprocessor/clustering.json",
+    "shap_cache": "ml/artifacts/explainability/shap_cache.json",
+    "test_evaluation": "ml/artifacts/metrics/test_evaluation.json"
+  }
+}

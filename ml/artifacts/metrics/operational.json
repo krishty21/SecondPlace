@@ -1,0 +1,12 @@
+{
+  "python_batch_ms_per_10k_events": 2645.1,
+  "artifact_sizes_bytes": {
+    "models/binary_lightgbm.json": 74319740,
+    "models/multiclass_lightgbm.json": 54689065,
+    "models/isolation_forest.json": 2749645,
+    "preprocessor/feature_config.json": 7234,
+    "preprocessor/clustering.json": 328054,
+    "explainability/shap_cache.json": 2319484
+  },
+  "total_training_seconds": 146.7
+}

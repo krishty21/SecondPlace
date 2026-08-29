@@ -1,0 +1,222 @@
+{
+  "expected_value": 3.3044997312593547,
+  "method": "TreeSHAP (exact), shap.TreeExplainer on LightGBM binary model, 2000-row training sample",
+  "features": [
+    {
+      "feature": "sttl",
+      "mean_abs_shap": 4.445031020049384
+    },
+    {
+      "feature": "ct_dst_sport_ltm",
+      "mean_abs_shap": 1.47247576815106
+    },
+    {
+      "feature": "ct_state_ttl",
+      "mean_abs_shap": 1.0644981526929753
+    },
+    {
+      "feature": "cat_proto",
+      "mean_abs_shap": 0.6733317982501732
+    },
+    {
+      "feature": "size_ratio",
+      "mean_abs_shap": 0.6480403749039956
+    },
+    {
+      "feature": "ct_srv_dst",
+      "mean_abs_shap": 0.45556901400247746
+    },
+    {
+      "feature": "cat_service",
+      "mean_abs_shap": 0.37902803722530465
+    },
+    {
+      "feature": "ct_srv_src",
+      "mean_abs_shap": 0.29458293174436295
+    },
+    {
+      "feature": "log1p_dload",
+      "mean_abs_shap": 0.26657135076958366
+    },
+    {
+      "feature": "ct_dst_src_ltm",
+      "mean_abs_shap": 0.2484272951730632
+    },
+    {
+      "feature": "log1p_sbytes",
+      "mean_abs_shap": 0.23524432468669357
+    },
+    {
+      "feature": "log1p_smean",
+      "mean_abs_shap": 0.2120003920850888
+    },
+    {
+      "feature": "rtt_ratio",
+      "mean_abs_shap": 0.20897783483890325
+    },
+    {
+      "feature": "ct_src_ltm",
+      "mean_abs_shap": 0.18975601416102988
+    },
+    {
+      "feature": "log1p_dbytes",
+      "mean_abs_shap": 0.156830659774672
+    },
+    {
+      "feature": "byte_ratio",
+      "mean_abs_shap": 0.152436936230323
+    },
+    {
+      "feature": "dmean",
+      "mean_abs_shap": 0.14782092510609593
+    },
+    {
+      "feature": "payload_per_packet",
+      "mean_abs_shap": 0.1329153489148807
+    },
+    {
+      "feature": "ct_src_dport_ltm",
+      "mean_abs_shap": 0.11731614808783128
+    },
+    {
+      "feature": "ct_dst_ltm",
+      "mean_abs_shap": 0.11518624055208167
+    },
+    {
+      "feature": "dttl",
+      "mean_abs_shap": 0.11203768633914377
+    },
+    {
+      "feature": "stcpb",
+      "mean_abs_shap": 0.10775806331445677
+    },
+    {
+      "feature": "log1p_dur",
+      "mean_abs_shap": 0.0978259008297993
+    },
+    {
+      "feature": "total_bytes",
+      "mean_abs_shap": 0.09209023402025897
+    },
+    {
+      "feature": "jitter_ratio",
+      "mean_abs_shap": 0.08105922691696749
+    },
+    {
+      "feature": "interpkt_ratio",
+      "mean_abs_shap": 0.07847020838515516
+    },
+    {
+      "feature": "dtcpb",
+      "mean_abs_shap": 0.07587082514091442
+    },
+    {
+      "feature": "log1p_sload",
+      "mean_abs_shap": 0.07447508457674386
+    },
+    {
+      "feature": "log1p_sinpkt",
+      "mean_abs_shap": 0.06699263200979802
+    },
+    {
+      "feature": "log1p_tcprtt",
+      "mean_abs_shap": 0.06528138249239468
+    },
+    {
+      "feature": "log1p_sjit",
+      "mean_abs_shap": 0.0634892120926917
+    },
+    {
+      "feature": "log1p_synack",
+      "mean_abs_shap": 0.05880132269599897
+    },
+    {
+      "feature": "log1p_rate",
+      "mean_abs_shap": 0.05831007917128451
+    },
+    {
+      "feature": "total_loss",
+      "mean_abs_shap": 0.057134027202830895
+    },
+    {
+      "feature": "load_ratio",
+      "mean_abs_shap": 0.052014870262685496
+    },
+    {
+      "feature": "log1p_djit",
+      "mean_abs_shap": 0.05196392557476539
+    },
+    {
+      "feature": "log1p_ackdat",
+      "mean_abs_shap": 0.050344811992460825
+    },
+    {
+      "feature": "cat_state",
+      "mean_abs_shap": 0.041867736126436884
+    },
+    {
+      "feature": "log1p_dloss",
+      "mean_abs_shap": 0.041708835912867157
+    },
+    {
+      "feature": "log1p_spkts",
+      "mean_abs_shap": 0.040131955519532726
+    },
+    {
+      "feature": "flow_asymmetry",
+      "mean_abs_shap": 0.03693853794394292
+    },
+    {
+      "feature": "log1p_sloss",
+      "mean_abs_shap": 0.03485281291189773
+    },
+    {
+      "feature": "log1p_dpkts",
+      "mean_abs_shap": 0.0298492093198761
+    },
+    {
+      "feature": "log1p_dinpkt",
+      "mean_abs_shap": 0.026336269413967925
+    },
+    {
+      "feature": "log1p_response_body_len",
+      "mean_abs_shap": 0.02378039320341444
+    },
+    {
+      "feature": "log1p_trans_depth",
+      "mean_abs_shap": 0.021101199401383046
+    },
+    {
+      "feature": "packet_ratio",
+      "mean_abs_shap": 0.020662376946684116
+    },
+    {
+      "feature": "log1p_ct_flw_http_mthd",
+      "mean_abs_shap": 0.014848944457286675
+    },
+    {
+      "feature": "total_packets",
+      "mean_abs_shap": 0.011332371915155522
+    },
+    {
+      "feature": "log1p_is_sm_ips_ports",
+      "mean_abs_shap": 0.010879135238292327
+    },
+    {
+      "feature": "swin",
+      "mean_abs_shap": 0.004931061197118644
+    },
+    {
+      "feature": "log1p_is_ftp_login",
+      "mean_abs_shap": 0.0035524461562239573
+    },
+    {
+      "feature": "log1p_ct_ftp_cmd",
+      "mean_abs_shap": 0.00034948298793507633
+    },
+    {
+      "feature": "dwin",
+      "mean_abs_shap": 0.0
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "raw_only_f1": 0.9725403001667593,
+  "full_pipeline_f1": 0.9736205698401668,
+  "features_raw": 39,
+  "features_full": 54,
+  "delta": 0.0010802696734074635
+}

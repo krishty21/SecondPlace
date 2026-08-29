@@ -1,0 +1,220 @@
+{
+  "features": [
+    {
+      "feature": "sttl",
+      "gain": 618987.2840108955
+    },
+    {
+      "feature": "ct_dst_sport_ltm",
+      "gain": 606796.9700226486
+    },
+    {
+      "feature": "log1p_sbytes",
+      "gain": 161862.67852210277
+    },
+    {
+      "feature": "byte_ratio",
+      "gain": 150076.11496790312
+    },
+    {
+      "feature": "total_bytes",
+      "gain": 148737.32249298174
+    },
+    {
+      "feature": "size_ratio",
+      "gain": 143286.76108053583
+    },
+    {
+      "feature": "ct_srv_dst",
+      "gain": 142665.76278139476
+    },
+    {
+      "feature": "payload_per_packet",
+      "gain": 135591.63419949485
+    },
+    {
+      "feature": "ct_dst_src_ltm",
+      "gain": 100737.66318555316
+    },
+    {
+      "feature": "log1p_smean",
+      "gain": 99705.35239992675
+    },
+    {
+      "feature": "cat_service",
+      "gain": 62531.21352385357
+    },
+    {
+      "feature": "cat_proto",
+      "gain": 55016.85144489445
+    },
+    {
+      "feature": "dmean",
+      "gain": 52062.58529361978
+    },
+    {
+      "feature": "ct_srv_src",
+      "gain": 51554.51308789733
+    },
+    {
+      "feature": "log1p_dbytes",
+      "gain": 45316.55854505251
+    },
+    {
+      "feature": "dttl",
+      "gain": 38952.72784900665
+    },
+    {
+      "feature": "log1p_synack",
+      "gain": 34821.7571400326
+    },
+    {
+      "feature": "log1p_tcprtt",
+      "gain": 29522.509648134816
+    },
+    {
+      "feature": "ct_state_ttl",
+      "gain": 29343.430564947426
+    },
+    {
+      "feature": "log1p_response_body_len",
+      "gain": 13369.580735005438
+    },
+    {
+      "feature": "log1p_sload",
+      "gain": 11707.244679495285
+    },
+    {
+      "feature": "log1p_dur",
+      "gain": 11342.484495788813
+    },
+    {
+      "feature": "load_ratio",
+      "gain": 11267.051037231926
+    },
+    {
+      "feature": "interpkt_ratio",
+      "gain": 10364.493937214196
+    },
+    {
+      "feature": "jitter_ratio",
+      "gain": 10300.314248134382
+    },
+    {
+      "feature": "log1p_ct_flw_http_mthd",
+      "gain": 9822.494717149646
+    },
+    {
+      "feature": "log1p_sloss",
+      "gain": 9652.819126963615
+    },
+    {
+      "feature": "ct_src_ltm",
+      "gain": 8763.228836493567
+    },
+    {
+      "feature": "log1p_dload",
+      "gain": 8228.61036442453
+    },
+    {
+      "feature": "stcpb",
+      "gain": 8158.706087653496
+    },
+    {
+      "feature": "dtcpb",
+      "gain": 7769.120418995037
+    },
+    {
+      "feature": "log1p_djit",
+      "gain": 7595.831115393434
+    },
+    {
+      "feature": "log1p_dloss",
+      "gain": 7594.89138687402
+    },
+    {
+      "feature": "log1p_ackdat",
+      "gain": 7223.06635889475
+    },
+    {
+      "feature": "rtt_ratio",
+      "gain": 7181.824706724845
+    },
+    {
+      "feature": "total_loss",
+      "gain": 7111.906824320555
+    },
+    {
+      "feature": "ct_src_dport_ltm",
+      "gain": 6809.732418076135
+    },
+    {
+      "feature": "log1p_sinpkt",
+      "gain": 6780.5978919932095
+    },
+    {
+      "feature": "log1p_sjit",
+      "gain": 6539.256942834938
+    },
+    {
+      "feature": "flow_asymmetry",
+      "gain": 5885.718205202371
+    },
+    {
+      "feature": "log1p_dinpkt",
+      "gain": 5860.422115651585
+    },
+    {
+      "feature": "log1p_spkts",
+      "gain": 5768.1444152947515
+    },
+    {
+      "feature": "packet_ratio",
+      "gain": 5763.33229777962
+    },
+    {
+      "feature": "ct_dst_ltm",
+      "gain": 4765.547518648673
+    },
+    {
+      "feature": "log1p_trans_depth",
+      "gain": 4638.777359478176
+    },
+    {
+      "feature": "log1p_rate",
+      "gain": 4565.2379887336865
+    },
+    {
+      "feature": "log1p_dpkts",
+      "gain": 3625.4374097514665
+    },
+    {
+      "feature": "cat_state",
+      "gain": 2683.36408855021
+    },
+    {
+      "feature": "total_packets",
+      "gain": 2061.696160730906
+    },
+    {
+      "feature": "swin",
+      "gain": 266.1190800666809
+    },
+    {
+      "feature": "log1p_is_ftp_login",
+      "gain": 249.00316083431244
+    },
+    {
+      "feature": "log1p_is_sm_ips_ports",
+      "gain": 111.16610050201416
+    },
+    {
+      "feature": "log1p_ct_ftp_cmd",
+      "gain": 10.790199756622314
+    },
+    {
+      "feature": "dwin",
+      "gain": 0.0
+    }
+  ]
+}

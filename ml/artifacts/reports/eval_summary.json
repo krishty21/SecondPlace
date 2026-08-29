@@ -1,0 +1,119 @@
+{
+  "final_model_selected": "LightGBM (best validation F1/AUC vs LogisticRegression/RandomForest/XGBoost \u2014 see model_comparison.json)",
+  "test_metrics_binary": {
+    "accuracy": 0.8662609920808434,
+    "precision": 0.812412386899452,
+    "recall": 0.9844039530574429,
+    "f1": 0.8901766389722824,
+    "roc_auc": 0.9826229699323431,
+    "pr_auc": 0.9872715602990496,
+    "specificity": 0.015596046942557134,
+    "false_positive_rate": 0.2784864864864865
+  },
+  "test_metrics_multiclass": {
+    "accuracy": 0.7710853617062624,
+    "macro_f1": 0.5197266716425247,
+    "weighted_f1": 0.7856359734308712,
+    "balanced_accuracy": 0.5585427501745444,
+    "macro_precision": 0.5585045850989248,
+    "macro_recall": 0.5585427501745444
+  },
+  "best_classes": [
+    {
+      "class": "Generic",
+      "support": 18871,
+      "precision": 0.9958738259406048,
+      "recall": 0.9720205606486143,
+      "f1": 0.9838026280504156
+    },
+    {
+      "class": "Reconnaissance",
+      "support": 3496,
+      "precision": 0.9300032862306934,
+      "recall": 0.8094965675057209,
+      "f1": 0.8655757761125554
+    },
+    {
+      "class": "Normal",
+      "support": 37000,
+      "precision": 0.9720647213386807,
+      "recall": 0.7598918918918919,
+      "f1": 0.8529822219525515
+    }
+  ],
+  "worst_classes": [
+    {
+      "class": "Backdoor",
+      "support": 583,
+      "precision": 0.03318722604884158,
+      "recall": 0.09090909090909091,
+      "f1": 0.04862385321100918
+    },
+    {
+      "class": "Analysis",
+      "support": 677,
+      "precision": 0.05514705882352941,
+      "recall": 0.11078286558345643,
+      "f1": 0.07363770250368189
+    },
+    {
+      "class": "DoS",
+      "support": 4089,
+      "precision": 0.6239316239316239,
+      "recall": 0.10711665443873808,
+      "f1": 0.1828428303068253
+    }
+  ],
+  "anomaly_performance": {
+    "roc_auc_vs_label": 0.7962908162839448,
+    "pr_auc_vs_label": 0.7949339098703128,
+    "score_distribution_normal": {
+      "mean": 24.740676760884515,
+      "p50": 18.07177845252277,
+      "p90": 43.85196733861106
+    },
+    "score_distribution_attack": {
+      "mean": 41.44883773948017,
+      "p50": 36.37362305468294,
+      "p90": 68.36123373918272
+    },
+    "precision_at_100": 0.96,
+    "recall_at_100": 0.002117709344392482,
+    "precision_at_500": 0.978,
+    "recall_at_500": 0.010787081972999206,
+    "precision_at_1000": 0.981,
+    "recall_at_1000": 0.021640342363010677,
+    "precision_at_5000": 0.8846,
+    "recall_at_5000": 0.09756904614841613
+  },
+  "calibration": {
+    "oof_brier_raw": 0.026340572186573246,
+    "oof_brier_platt": 0.02606752350634065,
+    "test_brier": 0.08556339984123472
+  },
+  "feature_ablation": {
+    "raw_only_f1": 0.9725403001667593,
+    "full_pipeline_f1": 0.9736205698401668,
+    "features_raw": 39,
+    "features_full": 54,
+    "delta": 0.0010802696734074635
+  },
+  "operational": {
+    "python_batch_ms_per_10k_events": 2645.1,
+    "artifact_sizes_bytes": {
+      "models/binary_lightgbm.json": 74319740,
+      "models/multiclass_lightgbm.json": 54689065,
+      "models/isolation_forest.json": 2749645,
+      "preprocessor/feature_config.json": 7234,
+      "preprocessor/clustering.json": 328054,
+      "explainability/shap_cache.json": 2319484
+    },
+    "total_training_seconds": 146.7
+  },
+  "how_to_run": {
+    "train": "python3 ml/scripts/train.py",
+    "inference_service": "cd mini-services/soc-engine && bun run dev (port 3010)"
+  },
+  "artifact_locations": "ml/artifacts/**",
+  "demo_flow": "Open the SOC UI -> Command Center (boot state) -> Live Replay (campaign escalation) -> Incident Investigation -> Explainability Center"
+}

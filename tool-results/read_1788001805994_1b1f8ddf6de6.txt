@@ -1,0 +1,1667 @@
+     1→     1→# MASTER BUILD PROMPT — CipherMind Sentinel
+     2→     2→## CipherMind AI '26 | UNSW-NB15 | Full-Stack AI SOC Copilot
+     3→     3→
+     4→     4→You are the lead AI/ML engineer, cybersecurity engineer, backend engineer, frontend engineer, MLOps engineer, QA engineer, and technical writer for this hackathon project.
+     5→     5→
+     6→     6→I am uploading a ZIP containing ONLY the currently selected UNSW-NB15 files. Treat the uploaded ZIP as the authoritative source for the dataset. Do not invent columns, rows, metadata, or capabilities that are not present in the uploaded files.
+     7→     7→
+     8→     8→The objective is to build a competition-grade, locally runnable, fully tested prototype called:
+     9→     9→
+    10→    10→**CipherMind Sentinel — AI Security Operations Copilot**
+    11→    11→
+    12→    12→Core positioning:
+    13→    13→
+    14→    14→> Transform noisy network-security data into prioritized threats, explainable detections, attack stories, and analyst-ready incident intelligence.
+    15→    15→
+    16→    16→This is NOT supposed to be a simple notebook or a single classifier. It should be an end-to-end AI security product whose detection engine is scientifically evaluated and whose outputs are presented through a polished SOC interface.
+    17→    17→
+    18→    18→---
+    19→    19→
+    20→    20→# 1. HACKATHON REQUIREMENTS
+    21→    21→
+    22→    22→The hackathon challenge asks for an intelligent cyber-defense platform that can:
+    23→    23→
+    24→    24→- Identify anomalies
+    25→    25→- Uncover hidden attack patterns
+    26→    26→- Prioritize critical threats
+    27→    27→- Assist analysts with AI-generated incident insights in real time
+    28→    28→- Analyze UNSW-NB15 traffic
+    29→    29→- Distinguish real threats from background noise
+    30→    30→- Identify suspicious network behavior
+    31→    31→- Discover relationships between attack patterns
+    32→    32→- Provide attack timelines / incident context
+    33→    33→- Generate clear, actionable explanations
+    34→    34→- Explain why a prediction was made
+    35→    35→
+    36→    36→Mandatory deliverables:
+    37→    37→
+    38→    38→1. Working AI prototype
+    39→    39→2. GitHub repository with source code and README
+    40→    40→3. 3–5 minute demo video
+    41→    41→4. Project documentation
+    42→    42→5. AI model details, training process, and evaluation metrics
+    43→    43→
+    44→    44→Bonus-oriented capabilities:
+    45→    45→
+    46→    46→- Interactive dashboard
+    47→    47→- Explainable AI
+    48→    48→- Live deployment
+    49→    49→- Real-time attack visualization
+    50→    50→- LLM-powered incident summaries
+    51→    51→- Innovative features beyond the problem statement
+    52→    52→
+    53→    53→Evaluation:
+    54→    54→
+    55→    55→- AI Model Performance & Accuracy — 30%
+    56→    56→- Innovation & Technical Implementation — 25%
+    57→    57→- Problem Solving & Practical Impact — 20%
+    58→    58→- User Experience & Explainability — 15%
+    59→    59→- Documentation, Demo & Presentation — 10%
+    60→    60→
+    61→    61→Design every engineering decision to maximize these criteria.
+    62→    62→
+    63→    63→---
+    64→    64→
+    65→    65→# 2. IMPORTANT DATASET REALITY
+    66→    66→
+    67→    67→The ZIP supplied to you contains exactly these files:
+    68→    68→
+    69→    69→- `NUSW-NB15_features.csv`
+    70→    70→- `Training and Testing Sets/UNSW_NB15_training-set.csv`
+    71→    71→- `Training and Testing Sets/UNSW_NB15_testing-set.csv`
+    72→    72→
+    73→    73→Observed dataset sizes:
+    74→    74→
+    75→    75→- Training: 175,341 rows × 45 columns
+    76→    76→- Testing: 82,332 rows × 45 columns
+    77→    77→
+    78→    78→The training set contains:
+    79→    79→
+    80→    80→- label = 0: 56,000 normal records
+    81→    81→- label = 1: 119,341 attack records
+    82→    82→
+    83→    83→Attack-category distribution in training:
+    84→    84→
+    85→    85→- Normal: 56,000
+    86→    86→- Generic: 40,000
+    87→    87→- Exploits: 33,393
+    88→    88→- Fuzzers: 18,184
+    89→    89→- DoS: 12,264
+    90→    90→- Reconnaissance: 10,491
+    91→    91→- Analysis: 2,000
+    92→    92→- Backdoor: 1,746
+    93→    93→- Shellcode: 1,133
+    94→    94→- Worms: 130
+    95→    95→
+    96→    96→The test set is the official supplied testing set. Use it as the final held-out evaluation set. Do NOT merge train and test and randomly re-split them for the final score.
+    97→    97→
+    98→    98→CRITICAL LIMITATION:
+    99→    99→
+   100→   100→The provided 45-column training/testing CSVs do NOT contain these raw fields:
+   101→   101→
+   102→   102→- srcip
+   103→   103→- sport
+   104→   104→- dstip
+   105→   105→- dsport
+   106→   106→
+   107→   107→The separate feature-description file documents those fields as part of the broader UNSW-NB15 feature specification, but they are not present in the provided model-training CSVs.
+   108→   108→
+   109→   109→Therefore:
+   110→   110→
+   111→   111→- Do NOT pretend the model sees real source IPs or destination IPs.
+   112→   112→- Do NOT claim true user identity, device identity, or network-topology reconstruction from this dataset.
+   113→   113→- Do NOT build explanations that quote non-existent IP/user/device fields.
+   114→   114→- Do NOT fabricate "real" lateral movement paths from fields we do not have.
+   115→   115→
+   116→   116→The product may still have:
+   117→   117→- attack timelines,
+   118→   118→- incident correlation,
+   119→   119→- behavioral clusters,
+   120→   120→- synthetic/replay scenarios,
+   121→   121→- pseudo-entities for demo visualization,
+   122→   122→
+   123→   123→but those must be clearly marked as simulated/reconstructed from available flow-level information rather than falsely presented as raw ground truth.
+   124→   124→
+   125→   125→Likewise, UNSW-NB15 is a network intrusion dataset, not an email-phishing dataset and not a malware-binary dataset. Do not falsely claim that this model directly predicts phishing emails or malware family identity from this data.
+   126→   126→
+   127→   127→The architecture may be extensible to those future data sources, but the implemented hackathon model must remain truthful about what the supplied data supports.
+   128→   128→
+   129→   129→---
+   130→   130→
+   131→   131→# 3. DATASET SCHEMA TO USE
+   132→   132→
+   133→   133→The actual model-training CSV columns are:
+   134→   134→
+   135→   135→1. id — record identifier
+   136→   136→2. dur — record duration
+   137→   137→3. proto — protocol
+   138→   138→4. service — network service
+   139→   139→5. state — connection state
+   140→   140→6. spkts — source packet count
+   141→   141→7. dpkts — destination packet count
+   142→   142→8. sbytes — source-to-destination bytes
+   143→   143→9. dbytes — destination-to-source bytes
+   144→   144→10. rate — traffic rate
+   145→   145→11. sttl — source TTL
+   146→   146→12. dttl — destination TTL
+   147→   147→13. sload — source load
+   148→   148→14. dload — destination load
+   149→   149→15. sloss — source packet loss/retransmission
+   150→   150→16. dloss — destination packet loss/retransmission
+   151→   151→17. sinpkt — source inter-packet timing
+   152→   152→18. dinpkt — destination inter-packet timing
+   153→   153→19. sjit — source jitter
+   154→   154→20. djit — destination jitter
+   155→   155→21. swin — source TCP window
+   156→   156→22. stcpb — source TCP base sequence
+   157→   157→23. dtcpb — destination TCP base sequence
+   158→   158→24. dwin — destination TCP window
+   159→   159→25. tcprtt — TCP round-trip time
+   160→   160→26. synack — SYN/ACK timing
+   161→   161→27. ackdat — ACK timing
+   162→   162→28. smean — source packet mean size
+   163→   163→29. dmean — destination packet mean size
+   164→   164→30. trans_depth — transaction depth
+   165→   165→31. response_body_len — response body length
+   166→   166→32. ct_srv_src — connections involving service/source
+   167→   167→33. ct_state_ttl — state/TTL relationship count
+   168→   168→34. ct_dst_ltm — destination activity count
+   169→   169→35. ct_src_dport_ltm — source/destination-port activity count
+   170→   170→36. ct_dst_sport_ltm — destination/source-port activity count
+   171→   171→37. ct_dst_src_ltm — destination/source relationship count
+   172→   172→38. is_ftp_login — FTP login indicator
+   173→   173→39. ct_ftp_cmd — FTP command count
+   174→   174→40. ct_flw_http_mthd — HTTP method/flow count
+   175→   175→41. ct_src_ltm — source activity count
+   176→   176→42. ct_srv_dst — service/destination relationship count
+   177→   177→43. is_sm_ips_ports — same-IP/same-port indicator
+   178→   178→44. attack_cat — attack category target
+   179→   179→45. label — binary target
+   180→   180→
+   181→   181→For supervised training:
+   182→   182→
+   183→   183→- Binary target = `label`
+   184→   184→- Multiclass target = `attack_cat`
+   185→   185→
+   186→   186→Do not use the target columns as input features.
+   187→   187→
+   188→   188→Be extremely careful with `id`: treat it as an identifier, not a learned semantic security feature. Prefer excluding it from model features unless you can demonstrate a non-leaky legitimate use.
+   189→   189→
+   190→   190→---
+   191→   191→
+   192→   192→# 4. PRIMARY PRODUCT VISION
+   193→   193→
+   194→   194→Build a system with this flow:
+   195→   195→
+   196→   196→DATA
+   197→   197→↓
+   198→   198→Validation / preprocessing
+   199→   199→↓
+   200→   200→Feature engineering
+   201→   201→↓
+   202→   202→AI detection
+   203→   203→↓
+   204→   204→Anomaly scoring
+   205→   205→↓
+   206→   206→Threat scoring
+   207→   207→↓
+   208→   208→Alert normalization
+   209→   209→↓
+   210→   210→Incident correlation
+   211→   211→↓
+   212→   212→Attack-story reconstruction
+   213→   213→↓
+   214→   214→Explainable AI
+   215→   215→↓
+   216→   216→Analyst copilot / incident summary
+   217→   217→↓
+   218→   218→SOC dashboard
+   219→   219→
+   220→   220→The main user is a SOC analyst who needs to answer:
+   221→   221→
+   222→   222→1. What is happening?
+   223→   223→2. How serious is it?
+   224→   224→3. Why does the model believe this?
+   225→   225→4. Which alerts belong together?
+   226→   226→5. What happened first?
+   227→   227→6. What is the likely attack category?
+   228→   228→7. What should I investigate next?
+   229→   229→
+   230→   230→---
+   231→   231→
+   232→   232→# 5. ML ARCHITECTURE
+   233→   233→
+   234→   234→Do NOT rely on one model.
+   235→   235→
+   236→   236→Build a layered detection architecture.
+   237→   237→
+   238→   238→## Model A — Binary Attack Detector
+   239→   239→
+   240→   240→Goal:
+   241→   241→
+   242→   242→Normal vs malicious.
+   243→   243→
+   244→   244→Recommended starting point:
+   245→   245→
+   246→   246→- XGBoost or LightGBM
+   247→   247→- Use the implementation that provides the best validated balance of accuracy, recall, macro-F1, inference speed, and interpretability.
+   248→   248→
+   249→   249→Evaluate alternatives if computationally practical:
+   250→   250→
+   251→   251→- Logistic Regression
+   252→   252→- Random Forest
+   253→   253→- XGBoost / LightGBM
+   254→   254→
+   255→   255→Do a principled comparison and choose the final model based on validation metrics, not preference.
+   256→   256→
+   257→   257→Output:
+   258→   258→
+   259→   259→- probability_normal
+   260→   260→- probability_attack
+   261→   261→- attack_confidence
+   262→   262→
+   263→   263→---
+   264→   264→
+   265→   265→## Model B — Multiclass Attack Classifier
+   266→   266→
+   267→   267→Goal:
+   268→   268→
+   269→   269→Predict `attack_cat`.
+   270→   270→
+   271→   271→Classes:
+   272→   272→
+   273→   273→- Normal
+   274→   274→- Analysis
+   275→   275→- Backdoor
+   276→   276→- DoS
+   277→   277→- Exploits
+   278→   278→- Fuzzers
+   279→   279→- Generic
+   280→   280→- Reconnaissance
+   281→   281→- Shellcode
+   282→   282→- Worms
+   283→   283→
+   284→   284→Because the class distribution is highly imbalanced, explicitly handle imbalance.
+   285→   285→
+   286→   286→Investigate:
+   287→   287→
+   288→   288→- class weights
+   289→   289→- sample weights
+   290→   290→- stratified validation
+   291→   291→- appropriate probability calibration
+   292→   292→- possibly controlled oversampling only on the training portion if justified
+   293→   293→
+   294→   294→Do NOT use naive oversampling before splitting.
+   295→   295→
+   296→   296→Do NOT allow data leakage.
+   297→   297→
+   298→   298→Optimize for:
+   299→   299→
+   300→   300→- macro-F1
+   301→   301→- per-class recall
+   302→   302→- balanced accuracy
+   303→   303→- confusion matrix
+   304→   304→- weighted F1
+   305→   305→- overall accuracy
+   306→   306→
+   307→   307→Do not report only accuracy.
+   308→   308→
+   309→   309→Especially investigate rare classes such as Worms and Shellcode.
+   310→   310→
+   311→   311→---
+   312→   312→
+   313→   313→## Model C — Unsupervised Anomaly Detector
+   314→   314→
+   315→   315→Purpose:
+   316→   316→
+   317→   317→Identify unusual behavior even when the supervised classifier is uncertain.
+   318→   318→
+   319→   319→Start with:
+   320→   320→
+   321→   321→- Isolation Forest
+   322→   322→
+   323→   323→Train the anomaly detector primarily on NORMAL training behavior.
+   324→   324→
+   325→   325→Output:
+   326→   326→
+   327→   327→- raw anomaly score
+   328→   328→- normalized anomaly score 0–100
+   329→   329→
+   330→   330→Make the transformation deterministic and documented.
+   331→   331→
+   332→   332→Optionally compare with an Autoencoder if compute/resources permit, but do not add complexity merely for appearance. Keep Isolation Forest as the reliable fallback.
+   333→   333→
+   334→   334→---
+   335→   335→
+   336→   336→## Model D — Threat Risk Scoring Engine
+   337→   337→
+   338→   338→Do NOT train a fake "risk model" from invented labels.
+   339→   339→
+   340→   340→Create a transparent, configurable risk-scoring layer from validated signals.
+   341→   341→
+   342→   342→Possible components:
+   343→   343→
+   344→   344→- supervised attack confidence
+   345→   345→- anomaly score
+   346→   346→- attack category severity
+   347→   347→- uncertainty
+   348→   348→- rarity
+   349→   349→- repeated related alerts
+   350→   350→- incident escalation/progression
+   351→   351→- contextual weighting
+   352→   352→
+   353→   353→Normalize to 0–100.
+   354→   354→
+   355→   355→Example output:
+   356→   356→
+   357→   357→0–24 = Low
+   358→   358→25–49 = Medium
+   359→   359→50–74 = High
+   360→   360→75–100 = Critical
+   361→   361→
+   362→   362→Document the exact formula and weights in the project documentation.
+   363→   363→
+   364→   364→Keep the formula configurable.
+   365→   365→
+   366→   366→---
+   367→   367→
+   368→   368→# 6. FEATURE ENGINEERING
+   369→   369→
+   370→   370→The final pipeline must be reproducible.
+   371→   371→
+   372→   372→Expected transformations:
+   373→   373→
+   374→   374→### Numerical features
+   375→   375→
+   376→   376→Handle:
+   377→   377→
+   378→   378→- missing values
+   379→   379→- infinite values
+   380→   380→- extreme skew/outliers where appropriate
+   381→   381→- scaling only when required by the specific model
+   382→   382→
+   383→   383→Consider log transforms for highly skewed positive variables where scientifically justified.
+   384→   384→
+   385→   385→### Categorical features
+   386→   386→
+   387→   387→At minimum:
+   388→   388→
+   389→   389→- proto
+   390→   390→- service
+   391→   391→- state
+   392→   392→
+   393→   393→Use a production-safe encoding strategy.
+   394→   394→
+   395→   395→Prefer an encoder that safely handles unseen categories at inference.
+   396→   396→
+   397→   397→### Derived behavioral features
+   398→   398→
+   399→   399→You may create additional features from fields actually present.
+   400→   400→
+   401→   401→Examples:
+   402→   402→
+   403→   403→- byte_ratio = sbytes / (dbytes + epsilon)
+   404→   404→- packet_ratio = spkts / (dpkts + epsilon)
+   405→   405→- payload_per_packet
+   406→   406→- total_bytes
+   407→   407→- total_packets
+   408→   408→- total_loss
+   409→   409→- directional asymmetry
+   410→   410→- RTT/timing-derived features
+   411→   411→- load ratios
+   412→   412→- packet-size asymmetry
+   413→   413→- state/traffic interaction features
+   414→   414→- burst/rate proxies
+   415→   415→
+   416→   416→Do not create derived variables that imply fields we do not have.
+   417→   417→
+   418→   418→Perform feature ablation to prove whether engineering helps.
+   419→   419→
+   420→   420→---
+   421→   421→
+   422→   422→# 7. DATA LEAKAGE PREVENTION
+   423→   423→
+   424→   424→This is NON-NEGOTIABLE.
+   425→   425→
+   426→   426→Implement:
+   427→   427→
+   428→   428→- training-only fitting of preprocessors
+   429→   429→- training-only class balancing
+   430→   430→- no target leakage
+   431→   431→- no test-derived feature statistics
+   432→   432→- no test-based threshold tuning
+   433→   433→- no test-based model selection
+   434→   434→
+   435→   435→Use the official train/test files correctly.
+   436→   436→
+   437→   437→Within the training set, create a stratified validation split or stratified cross-validation for model selection and threshold calibration.
+   438→   438→
+   439→   439→Use the supplied official test set exactly once for final benchmark evaluation after the final pipeline has been frozen.
+   440→   440→
+   441→   441→Record random seeds.
+   442→   442→
+   443→   443→---
+   444→   444→
+   445→   445→# 8. EVALUATION REQUIREMENTS
+   446→   446→
+   447→   447→Build a complete evaluation report.
+   448→   448→
+   449→   449→Required:
+   450→   450→
+   451→   451→### Binary
+   452→   452→
+   453→   453→- Accuracy
+   454→   454→- Precision
+   455→   455→- Recall
+   456→   456→- F1
+   457→   457→- ROC-AUC
+   458→   458→- PR-AUC
+   459→   459→- Confusion matrix
+   460→   460→- specificity / false-positive rate
+   461→   461→- threshold analysis
+   462→   462→
+   463→   463→### Multiclass
+   464→   464→
+   465→   465→- Accuracy
+   466→   466→- Macro Precision
+   467→   467→- Macro Recall
+   468→   468→- Macro F1
+   469→   469→- Weighted F1
+   470→   470→- Balanced Accuracy
+   471→   471→- Per-class precision / recall / F1
+   472→   472→- Confusion matrix
+   473→   473→- one-vs-rest ROC-AUC if computationally useful
+   474→   474→
+   475→   475→### Anomaly detector
+   476→   476→
+   477→   477→Because labels exist for evaluation but are NOT used as the primary training signal:
+   478→   478→
+   479→   479→- anomaly-score distributions
+   480→   480→- attack vs normal separation
+   481→   481→- ROC-AUC / PR-AUC for anomaly ranking
+   482→   482→- precision@k or recall@k for useful analyst triage scenarios
+   483→   483→- threshold analysis
+   484→   484→
+   485→   485→### Operational metrics
+   486→   486→
+   487→   487→Also measure:
+   488→   488→
+   489→   489→- inference latency
+   490→   490→- batch throughput
+   491→   491→- model artifact size
+   492→   492→- API response latency where feasible
+   493→   493→
+   494→   494→The goal is not just high accuracy.
+   495→   495→
+   496→   496→The goal is useful security triage.
+   497→   497→
+   498→   498→---
+   499→   499→
+   500→   500→# 9. MODEL CALIBRATION
+   501→   501→
+   502→   502→Evaluate whether predicted probabilities are trustworthy.
+   503→   503→
+   504→   504→Where justified, use:
+   505→   505→
+   506→   506→- Platt scaling
+   507→   507→- isotonic calibration
+   508→   508→- calibration curves
+   509→   509→- Brier score
+   510→   510→
+   511→   511→Do not claim that a model is "97% certain" unless its probability behavior supports that interpretation.
+   512→   512→
+   513→   513→---
+   514→   514→
+   515→   515→# 10. EXPLAINABLE AI
+   516→   516→
+   517→   517→Use SHAP or another robust explainability method.
+   518→   518→
+   519→   519→For each prediction, the interface must be able to answer:
+   520→   520→
+   521→   521→> Why did the model classify this event this way?
+   522→   522→
+   523→   523→Show:
+   524→   524→
+   525→   525→- top positive contributors
+   526→   526→- top negative contributors
+   527→   527→- feature value
+   528→   528→- contribution direction
+   529→   529→- model confidence
+   530→   530→- predicted class
+   531→   531→- baseline/expected behavior if available
+   532→   532→
+   533→   533→Make explanations human readable.
+   534→   534→
+   535→   535→Example:
+   536→   536→
+   537→   537→"High attack confidence was driven primarily by unusually high source traffic load, packet rate, and destination/source activity."
+   538→   538→
+   539→   539→Do not fabricate reasons.
+   540→   540→
+   541→   541→The explanation must be generated directly from actual model features.
+   542→   542→
+   543→   543→---
+   544→   544→
+   545→   545→# 11. INCIDENT CORRELATION ENGINE
+   546→   546→
+   547→   547→UNSW-NB15 rows are individual network-flow records and do not contain a complete SOC event stream.
+   548→   548→
+   549→   549→Build an incident-correlation layer that operates on model outputs.
+   550→   550→
+   551→   551→Possible logic:
+   552→   552→
+   553→   553→- sliding time windows when timestamps are available/created in the replay layer
+   554→   554→- similarity of predicted attack categories
+   555→   555→- similarity of behavioral feature profiles
+   556→   556→- repeated patterns
+   557→   557→- temporal proximity
+   558→   558→- source/session grouping when actual identifiers are available in the runtime data
+   559→   559→
+   560→   560→Because the supplied CSV lacks source/destination IP fields, do not claim true IP-based correlation.
+   561→   561→
+   562→   562→For demonstrations, create a replay/event layer that assigns synthetic event IDs and clearly labels any synthetic entity information.
+   563→   563→
+   564→   564→Goal:
+   565→   565→
+   566→   566→Turn many related alerts into fewer incidents.
+   567→   567→
+   568→   568→Example:
+   569→   569→
+   570→   570→50 related alerts
+   571→   571→→ 1 correlated incident
+   572→   572→
+   573→   573→---
+   574→   574→
+   575→   575→# 12. ATTACK STORY / TIMELINE
+   576→   576→
+   577→   577→Create an analyst-friendly timeline.
+   578→   578→
+   579→   579→Example structure:
+   580→   580→
+   581→   581→1. Initial suspicious behavior
+   582→   582→2. Escalation / repeated anomalies
+   583→   583→3. Attack-category transition
+   584→   584→4. High-confidence malicious event
+   585→   585→5. Incident peak
+   586→   586→6. Recommended response
+   587→   587→
+   588→   588→The "story" must be based on actual observed model outputs and derived event relationships.
+   589→   589→
+   590→   590→Do not invent attack steps unsupported by the data.
+   591→   591→
+   592→   592→The UI can label inferred transitions as:
+   593→   593→
+   594→   594→- Observed
+   595→   595→- Inferred
+   596→   596→- Simulated
+   597→   597→
+   598→   598→This distinction is important for trust.
+   599→   599→
+   600→   600→---
+   601→   601→
+   602→   602→# 13. LLM INCIDENT COPILOT
+   603→   603→
+   604→   604→Use an LLM ONLY for explanation, summarization, prioritization assistance, and analyst communication.
+   605→   605→
+   606→   606→Do NOT use an LLM as the primary network-flow classifier.
+   607→   607→
+   608→   608→Input the LLM with structured evidence such as:
+   609→   609→
+   610→   610→- model prediction
+   611→   611→- confidence
+   612→   612→- anomaly score
+   613→   613→- risk score
+   614→   614→- attack category
+   615→   615→- top SHAP contributors
+   616→   616→- incident timeline
+   617→   617→- correlated event statistics
+   618→   618→- explicitly marked inferred/simulated context
+   619→   619→
+   620→   620→The LLM must NOT invent facts.
+   621→   621→
+   622→   622→Require the prompt to:
+   623→   623→
+   624→   624→- cite supplied evidence in prose
+   625→   625→- distinguish observed vs inferred
+   626→   626→- avoid inventing IPs/users/malware families
+   627→   627→- produce uncertainty language
+   628→   628→- recommend safe analyst investigation steps
+   629→   629→
+   630→   630→Generate:
+   631→   631→
+   632→   632→### Executive Summary
+   633→   633→
+   634→   634→1–3 sentences.
+   635→   635→
+   636→   636→### Technical Analysis
+   637→   637→
+   638→   638→Explain what the model saw.
+   639→   639→
+   640→   640→### Why This Matters
+   641→   641→
+   642→   642→Business/security impact.
+   643→   643→
+   644→   644→### Recommended Investigation
+   645→   645→
+   646→   646→Concrete analyst checks.
+   647→   647→
+   648→   648→### Suggested Containment
+   649→   649→
+   650→   650→Only when appropriate and framed as recommended action, not confirmed truth.
+   651→   651→
+   652→   652→### Confidence / Caveats
+   653→   653→
+   654→   654→Explicitly mention limitations.
+   655→   655→
+   656→   656→If no external LLM API key is available, the application must still work using a deterministic local fallback summary.
+   657→   657→
+   658→   658→---
+   659→   659→
+   660→   660→# 14. THREAT / BEHAVIOR CLUSTERING
+   661→   661→
+   662→   662→The challenge asks for hidden attack patterns and relationships.
+   663→   663→
+   664→   664→Build a clustering module using model/feature representations.
+   665→   665→
+   666→   666→Possible approach:
+   667→   667→
+   668→   668→- standardized behavioral feature vector
+   669→   669→- dimensionality reduction for visualization (e.g. UMAP/PCA)
+   670→   670→- clustering (HDBSCAN / DBSCAN / K-Means)
+   671→   671→
+   672→   672→Use clustering to identify:
+   673→   673→
+   674→   674→- recurring behavioral groups
+   675→   675→- attack-category similarities
+   676→   676→- unusual outlier clusters
+   677→   677→
+   678→   678→Do NOT call these "malware families" unless supported by actual malware-sample data.
+   679→   679→
+   680→   680→Use precise terminology:
+   681→   681→
+   682→   682→- behavior clusters
+   683→   683→- attack-pattern clusters
+   684→   684→- traffic-behavior groups
+   685→   685→
+   686→   686→This is scientifically honest and still addresses hidden-pattern discovery.
+   687→   687→
+   688→   688→---
+   689→   689→
+   690→   690→# 15. FRONTEND — FULL-STACK SOC EXPERIENCE
+   691→   691→
+   692→   692→Build a polished React application.
+   693→   693→
+   694→   694→Preferred stack:
+   695→   695→
+   696→   696→- React
+   697→   697→- TypeScript
+   698→   698→- Tailwind CSS
+   699→   699→- a mature charting library
+   700→   700→- interactive graph/timeline library where useful
+   701→   701→- FastAPI backend
+   702→   702→- Python ML layer
+   703→   703→
+   704→   704→Do not create a generic admin template.
+   705→   705→
+   706→   706→The interface should look like a serious modern SOC product.
+   707→   707→
+   708→   708→Suggested visual language:
+   709→   709→
+   710→   710→- dark security operations theme
+   711→   711→- restrained use of alert/severity colors
+   712→   712→- high information density
+   713→   713→- strong typography
+   714→   714→- clear hierarchy
+   715→   715→- fast scanning
+   716→   716→- accessible status indicators
+   717→   717→- responsive layout
+   718→   718→
+   719→   719→---
+   720→   720→
+   721→   721→# 16. UI PAGES
+   722→   722→
+   723→   723→## Page 1 — SOC Command Center
+   724→   724→
+   725→   725→Primary screen.
+   726→   726→
+   727→   727→Show:
+   728→   728→
+   729→   729→- Total Alerts
+   730→   730→- Active Incidents
+   731→   731→- Critical Threats
+   732→   732→- Detection Rate
+   733→   733→- False Positive Indicator
+   734→   734→- High-Risk Trend
+   735→   735→- Attack-category breakdown
+   736→   736→- Threat timeline
+   737→   737→- Recent critical incidents
+   738→   738→
+   739→   739→Main panel:
+   740→   740→
+   741→   741→### "What needs attention now?"
+   742→   742→
+   743→   743→Prioritized incident list.
+   744→   744→
+   745→   745→Each item:
+   746→   746→
+   747→   747→- risk score
+   748→   748→- severity
+   749→   749→- predicted attack
+   750→   750→- confidence
+   751→   751→- anomaly score
+   752→   752→- number of correlated alerts
+   753→   753→- status
+   754→   754→- explanation preview
+   755→   755→
+   756→   756→---
+   757→   757→
+   758→   758→## Page 2 — Incident Investigation
+   759→   759→
+   760→   760→When analyst opens an incident:
+   761→   761→
+   762→   762→Show:
+   763→   763→
+   764→   764→- incident severity
+   765→   765→- overall risk score
+   766→   766→- attack category
+   767→   767→- confidence
+   768→   768→- anomaly score
+   769→   769→- incident summary
+   770→   770→- evidence
+   771→   771→- event timeline
+   772→   772→- attack progression
+   773→   773→- top contributing features
+   774→   774→- recommended investigation steps
+   775→   775→
+   776→   776→Use tabs or sections:
+   777→   777→
+   778→   778→Overview
+   779→   779→Timeline
+   780→   780→Evidence
+   781→   781→Explainability
+   782→   782→AI Analyst
+   783→   783→Related Patterns
+   784→   784→
+   785→   785→---
+   786→   786→
+   787→   787→## Page 3 — Threat Intelligence / Pattern Explorer
+   788→   788→
+   789→   789→Show:
+   790→   790→
+   791→   791→- behavior clusters
+   792→   792→- category distributions
+   793→   793→- unusual patterns
+   794→   794→- cluster sizes
+   795→   795→- representative feature profiles
+   796→   796→
+   797→   797→Interactive visualization preferred.
+   798→   798→
+   799→   799→---
+   800→   800→
+   801→   801→## Page 4 — Explainability Center
+   802→   802→
+   803→   803→Show:
+   804→   804→
+   805→   805→- global feature importance
+   806→   806→- local SHAP explanation
+   807→   807→- selected event details
+   808→   808→- confidence calibration
+   809→   809→- feature contribution charts
+   810→   810→
+   811→   811→---
+   812→   812→
+   813→   813→## Page 5 — Live Detection / Replay
+   814→   814→
+   815→   815→This is important for the demo.
+   816→   816→
+   817→   817→Allow the user to:
+   818→   818→
+   819→   819→- start a replay
+   820→   820→- pause
+   821→   821→- resume
+   822→   822→- change replay speed
+   823→   823→- see alerts appear
+   824→   824→- watch incidents form
+   825→   825→- watch risk scores change
+   826→   826→- open an incident in real time
+   827→   827→
+   828→   828→The replay uses the provided test data or a selected test subset.
+   829→   829→
+   830→   830→Do not claim this is a live production network feed.
+   831→   831→
+   832→   832→Label it clearly as:
+   833→   833→
+   834→   834→"Real-Time Detection Replay"
+   835→   835→
+   836→   836→---
+   837→   837→
+   838→   838→# 17. SOC DEMO EXPERIENCE
+   839→   839→
+   840→   840→Build the application so the demo is visually compelling.
+   841→   841→
+   842→   842→Ideal flow:
+   843→   843→
+   844→   844→1. Open command center
+   845→   845→2. Show alert stream
+   846→   846→3. Start replay
+   847→   847→4. Several low/medium alerts arrive
+   848→   848→5. Model identifies increasingly suspicious behavior
+   849→   849→6. Related events are correlated into an incident
+   850→   850→7. Incident becomes High/Critical
+   851→   851→8. Analyst opens incident
+   852→   852→9. Timeline appears
+   853→   853→10. SHAP explains why
+   854→   854→11. LLM summarizes incident
+   855→   855→12. Analyst sees recommended next steps
+   856→   856→13. Pattern explorer shows related behavior cluster
+   857→   857→
+   858→   858→The story should demonstrate:
+   859→   859→
+   860→   860→>  many noisy events → one prioritized security story
+   861→   861→
+   862→   862→---
+   863→   863→
+   864→   864→# 18. BACKEND API
+   865→   865→
+   866→   866→Create clean APIs.
+   867→   867→
+   868→   868→At minimum:
+   869→   869→
+   870→   870→- health/status
+   871→   871→- model metadata
+   872→   872→- single prediction
+   873→   873→- batch prediction
+   874→   874→- anomaly scoring
+   875→   875→- risk scoring
+   876→   876→- explainability
+   877→   877→- incidents
+   878→   878→- incident detail
+   879→   879→- replay start/control
+   880→   880→- clustering/pattern summary
+   881→   881→- AI incident summary
+   882→   882→
+   883→   883→Use typed request/response schemas.
+   884→   884→
+   885→   885→Handle errors cleanly.
+   886→   886→
+   887→   887→Add API documentation.
+   888→   888→
+   889→   889→---
+   890→   890→
+   891→   891→# 19. MODEL ARTIFACTS — REQUIRED
+   892→   892→
+   893→   893→This is CRITICAL.
+   894→   894→
+   895→   895→After training, save and provide the COMPLETE runnable model package.
+   896→   896→
+   897→   897→Must include:
+   898→   898→
+   899→   899→- binary classifier weights/model
+   900→   900→- multiclass classifier weights/model
+   901→   901→- anomaly detector
+   902→   902→- preprocessing/encoding objects
+   903→   903→- feature-engineering configuration
+   904→   904→- class-label mappings
+   905→   905→- threshold configuration
+   906→   906→- risk-scoring configuration
+   907→   907→- model version metadata
+   908→   908→- training configuration
+   909→   909→- feature list
+   910→   910→- metrics JSON
+   911→   911→- evaluation report
+   912→   912→- reproducibility information
+   913→   913→
+   914→   914→A user should be able to download the repository and use the saved artifacts without retraining.
+   915→   915→
+   916→   916→Do NOT merely save the final predictions.
+   917→   917→
+   918→   918→Do NOT merely give notebooks.
+   919→   919→
+   920→   920→I need the actual model artifacts/weights and preprocessing pipeline.
+   921→   921→
+   922→   922→Use an organized directory such as:
+   923→   923→
+   924→   924→`artifacts/models/`
+   925→   925→`artifacts/preprocessor/`
+   926→   926→`artifacts/metrics/`
+   927→   927→`artifacts/reports/`
+   928→   928→
+   929→   929→---
+   930→   930→
+   931→   931→# 20. MODEL REGISTRY METADATA
+   932→   932→
+   933→   933→Create a machine-readable model metadata file containing:
+   934→   934→
+   935→   935→- model name
+   936→   936→- model version
+   937→   937→- training date
+   938→   938→- dataset file names
+   939→   939→- train/test row counts
+   940→   940→- feature count
+   941→   941→- feature list
+   942→   942→- algorithm
+   943→   943→- hyperparameters
+   944→   944→- random seed
+   945→   945→- class mapping
+   946→   946→- thresholds
+   947→   947→- evaluation metrics
+   948→   948→- artifact paths
+   949→   949→- software versions
+   950→   950→
+   951→   951→---
+   952→   952→
+   953→   953→# 21. TRAINING PIPELINE
+   954→   954→
+   955→   955→Build a reproducible training entry point.
+   956→   956→
+   957→   957→The user should be able to run something equivalent to:
+   958→   958→
+   959→   959→`train`
+   960→   960→
+   961→   961→and get:
+   962→   962→
+   963→   963→1. dataset validation
+   964→   964→2. preprocessing
+   965→   965→3. feature engineering
+   966→   966→4. validation
+   967→   967→5. model selection
+   968→   968→6. training
+   969→   969→7. calibration if used
+   970→   970→8. test evaluation
+   971→   971→9. artifact serialization
+   972→   972→10. metrics report
+   973→   973→11. plots
+   974→   974→12. model metadata
+   975→   975→
+   976→   976→Do not force the user to manually edit Python notebooks.
+   977→   977→
+   978→   978→Prefer clean CLI commands/scripts.
+   979→   979→
+   980→   980→---
+   981→   981→
+   982→   982→# 22. INFERENCE PIPELINE
+   983→   983→
+   984→   984→Inference should load artifacts and run without retraining.
+   985→   985→
+   986→   986→Provide:
+   987→   987→
+   988→   988→- Python inference service
+   989→   989→- REST API
+   990→   990→- batch inference option
+   991→   991→- UI integration
+   992→   992→
+   993→   993→Support a single event and batch inputs.
+   994→   994→
+   995→   995→Return structured JSON.
+   996→   996→
+   997→   997→---
+   998→   998→
+   999→   999→# 23. TESTING REQUIREMENTS
+  1000→  1000→
+  1001→  1001→You MUST actually test the implementation.
+  1002→  1002→
+  1003→  1003→At minimum:
+  1004→  1004→
+  1005→  1005→### Data tests
+  1006→  1006→
+  1007→  1007→- expected columns exist
+  1008→  1008→- target columns exist
+  1009→  1009→- no unexpected data corruption
+  1010→  1010→- dtypes are reasonable
+  1011→  1011→- missing/infinite values handled
+  1012→  1012→- train/test schema matches
+  1013→  1013→
+  1014→  1014→### ML tests
+  1015→  1015→
+  1016→  1016→- model loads from saved artifacts
+  1017→  1017→- preprocessing loads
+  1018→  1018→- single prediction works
+  1019→  1019→- batch prediction works
+  1020→  1020→- anomaly scoring works
+  1021→  1021→- explanations work
+  1022→  1022→- labels map correctly
+  1023→  1023→
+  1024→  1024→### API tests
+  1025→  1025→
+  1026→  1026→- health endpoint
+  1027→  1027→- prediction endpoint
+  1028→  1028→- batch prediction
+  1029→  1029→- incidents endpoint
+  1030→  1030→- explanation endpoint
+  1031→  1031→- replay endpoint
+  1032→  1032→
+  1033→  1033→### Frontend tests
+  1034→  1034→
+  1035→  1035→- app builds
+  1036→  1036→- routes load
+  1037→  1037→- API integration works
+  1038→  1038→- loading states work
+  1039→  1039→- empty/error states work
+  1040→  1040→- incident detail works
+  1041→  1041→
+  1042→  1042→### End-to-end
+  1043→  1043→
+  1044→  1044→Actually run:
+  1045→  1045→
+  1046→  1046→dataset
+  1047→  1047→→ model
+  1048→  1048→→ API
+  1049→  1049→→ UI
+  1050→  1050→
+  1051→  1051→and confirm the user can go from input event to visible prediction.
+  1052→  1052→
+  1053→  1053→Do not merely say that tests "should pass".
+  1054→  1054→
+  1055→  1055→Run them.
+  1056→  1056→
+  1057→  1057→---
+  1058→  1058→
+  1059→  1059→# 24. PERFORMANCE / RESOURCE AWARENESS
+  1060→  1060→
+  1061→  1061→The app must be practical on a normal developer machine.
+  1062→  1062→
+  1063→  1063→Avoid unnecessarily enormous models.
+  1064→  1064→
+  1065→  1065→For inference:
+  1066→  1066→
+  1067→  1067→- load models once
+  1068→  1068→- do not retrain per request
+  1069→  1069→- batch where appropriate
+  1070→  1070→- cache expensive explainability computations when sensible
+  1071→  1071→- avoid blocking the main API process
+  1072→  1072→
+  1073→  1073→Provide a lightweight demo mode.
+  1074→  1074→
+  1075→  1075→---
+  1076→  1076→
+  1077→  1077→# 25. SECURITY / RELIABILITY
+  1078→  1078→
+  1079→  1079→Implement good engineering practices:
+  1080→  1080→
+  1081→  1081→- environment variables for secrets
+  1082→  1082→- no hardcoded API keys
+  1083→  1083→- safe API error handling
+  1084→  1084→- input validation
+  1085→  1085→- CORS configured appropriately
+  1086→  1086→- no arbitrary code execution
+  1087→  1087→- no leaking stack traces to users
+  1088→  1088→- explicit LLM fallback if unavailable
+  1089→  1089→
+  1090→  1090→---
+  1091→  1091→
+  1092→  1092→# 26. REPOSITORY STRUCTURE
+  1093→  1093→
+  1094→  1094→Use a professional structure similar to:
+  1095→  1095→
+  1096→  1096→/
+  1097→  1097→├── frontend/
+  1098→  1098→├── backend/
+  1099→  1099→├── ml/
+  1100→  1100→│   ├── training/
+  1101→  1101→│   ├── inference/
+  1102→  1102→│   ├── preprocessing/
+  1103→  1103→│   ├── explainability/
+  1104→  1104→│   ├── clustering/
+  1105→  1105→│   └── evaluation/
+  1106→  1106→├── artifacts/
+  1107→  1107→│   ├── models/
+  1108→  1108→│   ├── preprocessor/
+  1109→  1109→│   ├── metrics/
+  1110→  1110→│   └── reports/
+  1111→  1111→├── data/
+  1112→  1112→│   ├── raw/
+  1113→  1113→│   └── processed/
+  1114→  1114→├── tests/
+  1115→  1115→├── scripts/
+  1116→  1116→├── docs/
+  1117→  1117→├── .env.example
+  1118→  1118→├── README.md
+  1119→  1119→└── docker-compose.yml
+  1120→  1120→
+  1121→  1121→Adapt this structure when necessary, but preserve clean separation between:
+  1122→  1122→
+  1123→  1123→- frontend
+  1124→  1124→- API
+  1125→  1125→- ML
+  1126→  1126→- artifacts
+  1127→  1127→- tests
+  1128→  1128→- documentation
+  1129→  1129→
+  1130→  1130→---
+  1131→  1131→
+  1132→  1132→# 27. PARALLEL SUB-AGENTS
+  1133→  1133→
+  1134→  1134→USE PARALLEL AGENTS / SUB-AGENTS aggressively where your environment supports them.
+  1135→  1135→
+  1136→  1136→Do not make one agent sequentially do every task.
+  1137→  1137→
+  1138→  1138→Create a coordinated work breakdown.
+  1139→  1139→
+  1140→  1140→## Agent 1 — Dataset Scientist
+  1141→  1141→
+  1142→  1142→Responsibilities:
+  1143→  1143→
+  1144→  1144→- inspect uploaded files
+  1145→  1145→- validate schema
+  1146→  1146→- analyze distributions
+  1147→  1147→- inspect missing/infinite values
+  1148→  1148→- check duplicates
+  1149→  1149→- identify leakage risks
+  1150→  1150→- analyze class imbalance
+  1151→  1151→- recommend useful feature engineering
+  1152→  1152→- generate dataset report
+  1153→  1153→
+  1154→  1154→Deliverables:
+  1155→  1155→
+  1156→  1156→`docs/dataset_analysis.md`
+  1157→  1157→`artifacts/metrics/dataset_profile.json`
+  1158→  1158→
+  1159→  1159→---
+  1160→  1160→
+  1161→  1161→## Agent 2 — ML Research Engineer
+  1162→  1162→
+  1163→  1163→Responsibilities:
+  1164→  1164→
+  1165→  1165→- baseline models
+  1166→  1166→- compare candidate algorithms
+  1167→  1167→- validation strategy
+  1168→  1168→- class imbalance handling
+  1169→  1169→- binary classifier
+  1170→  1170→- multiclass classifier
+  1171→  1171→- threshold analysis
+  1172→  1172→- probability calibration
+  1173→  1173→- model selection
+  1174→  1174→
+  1175→  1175→Deliverables:
+  1176→  1176→
+  1177→  1177→trained model artifacts
+  1178→  1178→evaluation reports
+  1179→  1179→comparison tables
+  1180→  1180→
+  1181→  1181→---
+  1182→  1182→
+  1183→  1183→## Agent 3 — Anomaly/XAI Engineer
+  1184→  1184→
+  1185→  1185→Responsibilities:
+  1186→  1186→
+  1187→  1187→- Isolation Forest
+  1188→  1188→- anomaly normalization
+  1189→  1189→- threshold strategy
+  1190→  1190→- SHAP integration
+  1191→  1191→- global/local explanations
+  1192→  1192→- explanation API contract
+  1193→  1193→
+  1194→  1194→Deliverables:
+  1195→  1195→
+  1196→  1196→anomaly model
+  1197→  1197→XAI module
+  1198→  1198→explainability documentation
+  1199→  1199→
+  1200→  1200→---
+  1201→  1201→
+  1202→  1202→## Agent 4 — Threat Intelligence Engineer
+  1203→  1203→
+  1204→  1204→Responsibilities:
+  1205→  1205→
+  1206→  1206→- risk scoring architecture
+  1207→  1207→- alert normalization
+  1208→  1208→- incident correlation
+  1209→  1209→- behavioral clustering
+  1210→  1210→- attack-story logic
+  1211→  1211→- observed vs inferred vs simulated semantics
+  1212→  1212→
+  1213→  1213→Deliverables:
+  1214→  1214→
+  1215→  1215→incident engine
+  1216→  1216→risk-scoring documentation
+  1217→  1217→pattern explorer data contracts
+  1218→  1218→
+  1219→  1219→---
+  1220→  1220→
+  1221→  1221→## Agent 5 — Backend Engineer
+  1222→  1222→
+  1223→  1223→Responsibilities:
+  1224→  1224→
+  1225→  1225→- FastAPI
+  1226→  1226→- inference service
+  1227→  1227→- APIs
+  1228→  1228→- model loading
+  1229→  1229→- caching
+  1230→  1230→- replay service
+  1231→  1231→- LLM orchestration
+  1232→  1232→- API tests
+  1233→  1233→
+  1234→  1234→Deliverables:
+  1235→  1235→
+  1236→  1236→complete backend
+  1237→  1237→
+  1238→  1238→---
+  1239→  1239→
+  1240→  1240→## Agent 6 — Frontend Engineer
+  1241→  1241→
+  1242→  1242→Responsibilities:
+  1243→  1243→
+  1244→  1244→- React/TypeScript application
+  1245→  1245→- SOC command center
+  1246→  1246→- incident investigation
+  1247→  1247→- explainability UI
+  1248→  1248→- threat pattern explorer
+  1249→  1249→- real-time replay
+  1250→  1250→- responsive design
+  1251→  1251→
+  1252→  1252→Deliverables:
+  1253→  1253→
+  1254→  1254→complete frontend
+  1255→  1255→
+  1256→  1256→---
+  1257→  1257→
+  1258→  1258→## Agent 7 — MLOps / Packaging Engineer
+  1259→  1259→
+  1260→  1260→Responsibilities:
+  1261→  1261→
+  1262→  1262→- reproducible training
+  1263→  1263→- serialization
+  1264→  1264→- model artifacts
+  1265→  1265→- version metadata
+  1266→  1266→- requirements
+  1267→  1267→- Docker
+  1268→  1268→- local setup
+  1269→  1269→- environment configuration
+  1270→  1270→
+  1271→  1271→Deliverables:
+  1272→  1272→
+  1273→  1273→artifact package
+  1274→  1274→Docker setup
+  1275→  1275→deployment instructions
+  1276→  1276→
+  1277→  1277→---
+  1278→  1278→
+  1279→  1279→## Agent 8 — QA / Red-Team Reviewer
+  1280→  1280→
+  1281→  1281→Responsibilities:
+  1282→  1282→
+  1283→  1283→- inspect the entire implementation
+  1284→  1284→- run tests
+  1285→  1285→- find data leakage
+  1286→  1286→- find broken APIs
+  1287→  1287→- find UI bugs
+  1288→  1288→- verify model loading
+  1289→  1289→- verify reproducibility
+  1290→  1290→- challenge unsupported claims
+  1291→  1291→- test edge cases
+  1292→  1292→- produce final punch list
+  1293→  1293→
+  1294→  1294→Deliverables:
+  1295→  1295→
+  1296→  1296→`docs/qa_report.md`
+  1297→  1297→
+  1298→  1298→---
+  1299→  1299→
+  1300→  1300→## Agent 9 — Hackathon Judge / Product Reviewer
+  1301→  1301→
+  1302→  1302→Act like a skeptical judge.
+  1303→  1303→
+  1304→  1304→Review:
+  1305→  1305→
+  1306→  1306→- innovation
+  1307→  1307→- technical depth
+  1308→  1308→- practical impact
+  1309→  1309→- UX
+  1310→  1310→- explainability
+  1311→  1311→- demo wow factor
+  1312→  1312→- documentation
+  1313→  1313→
+  1314→  1314→Suggest only changes that can realistically improve judging score.
+  1315→  1315→
+  1316→  1316→Do NOT sacrifice correctness for flashy features.
+  1317→  1317→
+  1318→  1318→---
+  1319→  1319→
+  1320→  1320→# 28. AGENT COORDINATION
+  1321→  1321→
+  1322→  1322→Agents may work in parallel, but integration must happen carefully.
+  1323→  1323→
+  1324→  1324→Before finalizing:
+  1325→  1325→
+  1326→  1326→1. Merge modules
+  1327→  1327→2. Resolve interface mismatches
+  1328→  1328→3. Run full tests
+  1329→  1329→4. Run end-to-end flow
+  1330→  1330→5. Rebuild frontend
+  1331→  1331→6. Start backend
+  1332→  1332→7. Load saved models
+  1333→  1333→8. Execute sample prediction
+  1334→  1334→9. Run replay
+  1335→  1335→10. Verify incident generation
+  1336→  1336→11. Verify XAI
+  1337→  1337→12. Verify LLM fallback
+  1338→  1338→13. Verify README
+  1339→  1339→
+  1340→  1340→No module is considered finished until it works with the complete system.
+  1341→  1341→
+  1342→  1342→---
+  1343→  1343→
+  1344→  1344→# 29. IMPORTANT PRODUCT DECISIONS
+  1345→  1345→
+  1346→  1346→Prefer:
+  1347→  1347→
+  1348→  1348→- XGBoost/LightGBM for tabular supervised detection
+  1349→  1349→- Isolation Forest for anomaly detection
+  1350→  1350→- SHAP for explainability
+  1351→  1351→- transparent threat scoring
+  1352→  1352→- behavioral clustering
+  1353→  1353→- FastAPI
+  1354→  1354→- React + TypeScript
+  1355→  1355→- polished SOC UI
+  1356→  1356→- reproducible artifacts
+  1357→  1357→
+  1358→  1358→Do NOT add technology merely because it sounds impressive.
+  1359→  1359→
+  1360→  1360→Every feature must improve one or more of:
+  1361→  1361→
+  1362→  1362→- detection
+  1363→  1363→- prioritization
+  1364→  1364→- explanation
+  1365→  1365→- investigation
+  1366→  1366→- demo quality
+  1367→  1367→
+  1368→  1368→---
+  1369→  1369→
+  1370→  1370→# 30. WHAT NOT TO DO
+  1371→  1371→
+  1372→  1372→DO NOT:
+  1373→  1373→
+  1374→  1374→- build only a Jupyter notebook
+  1375→  1375→- report only accuracy
+  1376→  1376→- use the test set to tune the final model
+  1377→  1377→- leak target values
+  1378→  1378→- use `id` as a meaningful security feature without justification
+  1379→  1379→- fabricate IPs/users/devices
+  1380→  1380→- fabricate malware families
+  1381→  1381→- fabricate phishing detection from this network dataset
+  1382→  1382→- claim true real-time production traffic
+  1383→  1383→- use an LLM as the primary classifier
+  1384→  1384→- hardcode secrets
+  1385→  1385→- leave model weights out of the repository/release package
+  1386→  1386→- create a README that does not actually work
+  1387→  1387→- say "tested" without actually running tests
+  1388→  1388→- produce a dashboard that is disconnected from the real model
+  1389→  1389→
+  1390→  1390→---
+  1391→  1391→
+  1392→  1392→# 31. REQUIRED DOCUMENTATION
+  1393→  1393→
+  1394→  1394→Produce these documents:
+  1395→  1395→
+  1396→  1396→### README.md
+  1397→  1397→
+  1398→  1398→Must include:
+  1399→  1399→
+  1400→  1400→- project overview
+  1401→  1401→- architecture
+  1402→  1402→- prerequisites
+  1403→  1403→- Python version
+  1404→  1404→- Node version
+  1405→  1405→- installation
+  1406→  1406→- environment variables
+  1407→  1407→- dataset placement
+  1408→  1408→- training command
+  1409→  1409→- evaluation command
+  1410→  1410→- inference command
+  1411→  1411→- backend startup
+  1412→  1412→- frontend startup
+  1413→  1413→- Docker setup
+  1414→  1414→- model artifact location
+  1415→  1415→- sample API usage
+  1416→  1416→- demo instructions
+  1417→  1417→- troubleshooting
+  1418→  1418→
+  1419→  1419→A person cloning the project onto a clean machine should be able to follow this README.
+  1420→  1420→
+  1421→  1421→### docs/ARCHITECTURE.md
+  1422→  1422→
+  1423→  1423→Detailed architecture.
+  1424→  1424→
+  1425→  1425→### docs/DATASET.md
+  1426→  1426→
+  1427→  1427→Exact dataset understanding and limitations.
+  1428→  1428→
+  1429→  1429→### docs/MODEL_CARD.md
+  1430→  1430→
+  1431→  1431→For every model:
+  1432→  1432→
+  1433→  1433→- purpose
+  1434→  1434→- inputs
+  1435→  1435→- outputs
+  1436→  1436→- training process
+  1437→  1437→- metrics
+  1438→  1438→- limitations
+  1439→  1439→- intended use
+  1440→  1440→
+  1441→  1441→### docs/EVALUATION.md
+  1442→  1442→
+  1443→  1443→Detailed metrics and methodology.
+  1444→  1444→
+  1445→  1445→### docs/THREAT_SCORING.md
+  1446→  1446→
+  1447→  1447→Risk formula and reasoning.
+  1448→  1448→
+  1449→  1449→### docs/INCIDENT_CORRELATION.md
+  1450→  1450→
+  1451→  1451→How alerts become incidents.
+  1452→  1452→
+  1453→  1453→### docs/XAI.md
+  1454→  1454→
+  1455→  1455→How explanations are generated.
+  1456→  1456→
+  1457→  1457→### docs/LIMITATIONS.md
+  1458→  1458→
+  1459→  1459→Be honest.
+  1460→  1460→
+  1461→  1461→This increases credibility.
+  1462→  1462→
+  1463→  1463→---
+  1464→  1464→
+  1465→  1465→# 32. DEMO SEED DATA
+  1466→  1466→
+  1467→  1467→Create a deterministic demo configuration.
+  1468→  1468→
+  1469→  1469→The demo should always produce an interesting sequence.
+  1470→  1470→
+  1471→  1471→Requirements:
+  1472→  1472→
+  1473→  1473→- same random seed / deterministic selection
+  1474→  1474→- selected attack-heavy events
+  1475→  1475→- selected normal background
+  1476→  1476→- progressive alert escalation
+  1477→  1477→- visible incident creation
+  1478→  1478→- explainability output
+  1479→  1479→- LLM summary/fallback
+  1480→  1480→
+  1481→  1481→Do not fake model results.
+  1482→  1482→
+  1483→  1483→Choose real events from the supplied dataset and replay their model outputs.
+  1484→  1484→
+  1485→  1485→If synthetic metadata is added for visualization, mark it as simulation metadata.
+  1486→  1486→
+  1487→  1487→---
+  1488→  1488→
+  1489→  1489→# 33. ACCEPTANCE CRITERIA
+  1490→  1490→
+  1491→  1491→Do not finish until ALL of these are true:
+  1492→  1492→
+  1493→  1493→[ ] Dataset loads successfully
+  1494→  1494→
+  1495→  1495→[ ] Dataset schema validated
+  1496→  1496→
+  1497→  1497→[ ] Train/test handling is correct
+  1498→  1498→
+  1499→  1499→[ ] Binary classifier trained
+  1500→  1500→
+  1501→  1501→[ ] Multiclass classifier trained
+  1502→  1502→
+  1503→  1503→[ ] Anomaly detector trained
+  1504→  1504→
+  1505→  1505→[ ] Final models evaluated on official test set
+  1506→  1506→
+  1507→  1507→[ ] Metrics generated
+  1508→  1508→
+  1509→  1509→[ ] Confusion matrices generated
+  1510→  1510→
+  1511→  1511→[ ] Rare classes analyzed
+  1512→  1512→
+  1513→  1513→[ ] Model probabilities calibrated or calibration explicitly assessed
+  1514→  1514→
+  1515→  1515→[ ] SHAP explanations work
+  1516→  1516→
+  1517→  1517→[ ] Risk scoring works
+  1518→  1518→
+  1519→  1519→[ ] Alert correlation works
+  1520→  1520→
+  1521→  1521→[ ] Incident timeline works
+  1522→  1522→
+  1523→  1523→[ ] Behavioral clustering works
+  1524→  1524→
+  1525→  1525→[ ] Backend API works
+  1526→  1526→
+  1527→  1527→[ ] React frontend works
+  1528→  1528→
+  1529→  1529→[ ] Replay mode works
+  1530→  1530→
+  1531→  1531→[ ] LLM summary works or safe fallback works
+  1532→  1532→
+  1533→  1533→[ ] Saved model artifacts load correctly
+  1534→  1534→
+  1535→  1535→[ ] A fresh Python process can load artifacts
+  1536→  1536→
+  1537→  1537→[ ] Frontend builds successfully
+  1538→  1538→
+  1539→  1539→[ ] Automated tests pass
+  1540→  1540→
+  1541→  1541→[ ] End-to-end test passes
+  1542→  1542→
+  1543→  1543→[ ] README instructions verified
+  1544→  1544→
+  1545→  1545→[ ] No hardcoded secrets
+  1546→  1546→
+  1547→  1547→[ ] Unsupported dataset capabilities are not claimed
+  1548→  1548→
+  1549→  1549→---
+  1550→  1550→
+  1551→  1551→# 34. FINAL DELIVERABLE PACKAGE
+  1552→  1552→
+  1553→  1553→At completion, return:
+  1554→  1554→
+  1555→  1555→1. Full source code
+  1556→  1556→2. Trained model artifacts / weights
+  1557→  1557→3. Preprocessing artifacts
+  1558→  1558→4. Anomaly detector
+  1559→  1559→5. Metrics
+  1560→  1560→6. Evaluation reports
+  1561→  1561→7. Model metadata
+  1562→  1562→8. React frontend
+  1563→  1563→9. FastAPI backend
+  1564→  1564→10. Tests
+  1565→  1565→11. Docker configuration
+  1566→  1566→12. README
+  1567→  1567→13. Architecture documentation
+  1568→  1568→14. Model card
+  1569→  1569→15. Dataset documentation
+  1570→  1570→16. Threat-scoring documentation
+  1571→  1571→17. XAI documentation
+  1572→  1572→18. Incident-correlation documentation
+  1573→  1573→19. Limitations documentation
+  1574→  1574→
+  1575→  1575→Also provide a concise final report containing:
+  1576→  1576→
+  1577→  1577→### Final model selected
+  1578→  1578→Why it was selected.
+  1579→  1579→
+  1580→  1580→### Final test metrics
+  1581→  1581→All key metrics.
+  1582→  1582→
+  1583→  1583→### Best/worst classes
+  1584→  1584→Especially rare classes.
+  1585→  1585→
+  1586→  1586→### Anomaly performance
+  1587→  1587→Ranking metrics.
+  1588→  1588→
+  1589→  1589→### Explainability
+  1590→  1590→How it works.
+  1591→  1591→
+  1592→  1592→### Operational performance
+  1593→  1593→Inference latency/throughput.
+  1594→  1594→
+  1595→  1595→### How to run locally
+  1596→  1596→Exact commands.
+  1597→  1597→
+  1598→  1598→### Model artifact locations
+  1599→  1599→Exact paths.
+  1600→  1600→
+  1601→  1601→### Demo flow
+  1602→  1602→Exact steps.
+  1603→  1603→
+  1604→  1604→---
+  1605→  1605→
+  1606→  1606→# 35. QUALITY BAR
+  1607→  1607→
+  1608→  1608→Act as if this will be reviewed by:
+  1609→  1609→
+  1610→  1610→- an ML engineer
+  1611→  1611→- a cybersecurity engineer
+  1612→  1612→- a SOC analyst
+  1613→  1613→- a startup CTO
+  1614→  1614→- and a very skeptical hackathon judge
+  1615→  1615→
+  1616→  1616→The final product must be:
+  1617→  1617→
+  1618→  1618→- technically defensible
+  1619→  1619→- scientifically evaluated
+  1620→  1620→- visually polished
+  1621→  1621→- reproducible
+  1622→  1622→- locally runnable
+  1623→  1623→- explainable
+  1624→  1624→- honest about limitations
+  1625→  1625→- impressive in a 3–5 minute demo
+  1626→  1626→
+  1627→  1627→Do not optimize for buzzwords.
+  1628→  1628→
+  1629→  1629→Optimize for:
+  1630→  1630→
+  1631→  1631→**credible AI + useful SOC workflow + excellent UX + excellent proof.**
+  1632→  1632→
+  1633→  1633→---
+  1634→  1634→
+  1635→  1635→# 36. START NOW
+  1636→  1636→
+  1637→  1637→First inspect the uploaded ZIP and validate every file.
+  1638→  1638→
+  1639→  1639→Then run the project as a coordinated multi-agent build.
+  1640→  1640→
+  1641→  1641→Do not ask me to manually perform obvious implementation steps that you can handle yourself.
+  1642→  1642→
+  1643→  1643→Use parallel agents for independent modules.
+  1644→  1644→
+  1645→  1645→Before making major architecture choices, inspect the actual dataset.
+  1646→  1646→
+  1647→  1647→Before calling the project complete, run the full test/evaluation/integration cycle.
+  1648→  1648→
+  1649→  1649→Most importantly:
+  1650→  1650→
+  1651→  1651→**I need an actual working implementation, not a plan, not pseudocode, and not a partial prototype.**
+  1652→  1652→
+  1653→  1653→The finished system should allow me to:
+  1654→  1654→
+  1655→  1655→1. launch the backend
+  1656→  1656→2. launch the frontend
+  1657→  1657→3. load the trained models
+  1658→  1658→4. run a prediction
+  1659→  1659→5. view the prediction in the SOC UI
+  1660→  1660→6. inspect why it was predicted
+  1661→  1661→7. see its risk score
+  1662→  1662→8. see related events/incidents
+  1663→  1663→9. run the replay
+  1664→  1664→10. obtain an analyst-ready AI summary
+  1665→  1665→
+  1666→  1666→And I need the complete saved models/weights and all required preprocessing artifacts so I can run the system locally without retraining.
+  1667→  1667→
