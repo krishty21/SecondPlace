@@ -122,7 +122,7 @@ export function loadArtifacts() {
     iforest: readJson<IForestArt>("models/isolation_forest.json"),
     features: readJson<FeatureConfig>("preprocessor/feature_config.json"),
     clustering: readJson<ClusteringArt>("preprocessor/clustering.json"),
-    registry: readJson<Registry>("model_registry.json"),
+    registry: readJson<Registry>("metadata/model_registry.json"),
     demoSequence: readJson("replay/demo_sequence.json"),
     bootSample: readJson("replay/boot_sample.json"),
     shapCache: readJson("explainability/shap_cache.json"),

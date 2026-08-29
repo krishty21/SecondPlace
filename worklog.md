@@ -110,3 +110,29 @@ Stage Summary:
 - Full stack LIVE and verified: Next.js 3000 + soc-engine 3010 + gateway 81, daemonized and persistent.
 - Final test metrics: Binary F1=0.890/AUC=0.983/PR=0.987 (threshold 0.46); Multiclass macro-F1=0.520/weighted 0.786; Anomaly ROC-AUC=0.796 P@1000=0.981.
 - All acceptance criteria from the master prompt verified except demo video (out of scope for code agent).
+
+---
+Task ID: 8
+Agent: main
+Task: Final refactor & release packaging — master ML notebook, artifact reorg, README, clean ZIP + full verification
+
+Work Log:
+- Investigated a suspected source corruption in live-replay.tsx (`const ode, setMode]`) — DISPROVEN: the bash tool's output pipeline eats `[m` ANSI sequences; the file was always valid (verified via Read tool + byte inspection). Real discovery from that investigation: direct localhost:3000 access showed ENGINE OFFLINE because engine calls depended on the Caddy gateway.
+- Added local-run support: NEXT_PUBLIC_ENGINE_URL env var — soc-api.ts engineUrl() + live-replay.tsx socket.io connect use it directly (CORS already enabled engine-side); unset keeps sandbox gateway mode (?XTransformPort=3010). Verified BOTH modes in browser.
+- Artifact reorganization: moved model_registry.json → ml/artifacts/metadata/model_registry.json (new metadata/ folder matching release structure); updated soc-engine artifacts.ts loader; restarted engine (111 incidents, registry loads).
+- Built notebooks/CipherMind_Model_Training_and_Evaluation.ipynb via scripts/build_notebook.py: 70 cells (41 code / 29 md), 26 numbered sections per spec, dual-mode (MODE="verify" shipped default / "train" full pipeline). All training logic ported VERBATIM from train.py incl. KMeans clustering stage (17.2), demo/boot/SHAP-cache export, registry; verify mode asserts feature-config equality, LR baseline parity (tol 1e-3 BLAS note), full test-evaluation parity (tol 1e-6), SHAP top-10 overlap, registry consistency.
+- Executed the notebook in verify mode (114s, 0 cell errors, 13 plots): official test metrics reproduce shipped artifacts with max |Δ| = 0.0; SHAP top-10 overlap 10/10 (Spearman 0.9992); shipped notebook contains executed outputs.
+- Removed redundant ML scripts: ml/scripts/train.py, ml/scripts/analyze_dataset.py, ml/training/features.py (deleted); tests/*.sh sandbox scripts removed.
+- Rewrote tests/validate_ts_engine.py: config-based (applies shipped feature_config.json — same contract as production), relative paths, urllib (no curl dep), reads registry from metadata/; verified 13/13 rows ALL MATCH against live engine.
+- Created requirements.txt (pinned: numpy 2.1.3, pandas 2.2.3, sklearn 1.5.2, lightgbm 4.5.0, xgboost 2.1.3, scipy 1.14.1, shap 0.52.0, matplotlib 3.9.2 + jupyter stack), .env.example (NEXT_PUBLIC_ENGINE_URL), scripts/start-all.sh/.bat + stop-all.sh/.bat (auto-create .env, install deps, boot both services).
+- Rewrote README.md: A) run trained app (no retrain, Windows+Linux) vs B) retrain via notebook; final metrics table, architecture diagram, project structure, API usage, artifact locations, dataset honesty, Docker note (none shipped), troubleshooting table, limitations, security disclaimer.
+- Updated docs (ARCHITECTURE, EVALUATION, MODEL_CARD, THREAT_SCORING, QA_REPORT, dataset_analysis) + artifact JSON doc strings (eval_summary how_to_run, dataset_profile generated_by) to reference the notebook + metadata/ path instead of deleted scripts.
+- Built CipherMind_Sentinel_Final.zip via scripts/make_release_zip.py: 34.4 MB, 146 files, explicit canonical artifact manifest (22 artifacts), excludes node_modules/.next/logs/sandbox tooling; includes executed notebook, both CSVs, docs, scripts, tests, .env.example, .gitignore.
+- FULL ZIP VERIFICATION in /home/z/zip-verify (fresh extract): bun install OK (846 + 22 pkgs from cache); engine booted (111 incidents); all REST endpoints 200; predict/explain/replay work; validate_ts_engine 13/13 MATCH; browser E2E on localhost:3000 in DIRECT mode — ENGINE ONLINE, all 5 views, live replay via cross-origin socket.io, AI Analyst LLM summary (6 sections), 0 console errors; notebook EXECUTED from the extracted ZIP — 0 errors, parity 0.0, wrote notebook_verification.json; README path references all exist.
+- Restored production services (Turbopack cache had corrupted — cleared .next, restarted); verified gateway preview: ENGINE ONLINE, replay streaming via socket.io, bun run lint clean.
+
+Stage Summary:
+- Release complete: /home/z/my-project/CipherMind_Sentinel_Final.zip (34.4 MB) verified end-to-end from clean extract.
+- Canonical ML workflow now lives in ONE notebook (executed, submission-ready); production app (Next.js + soc-engine TS inference) unchanged in architecture, verified working in both gateway and direct modes.
+- All verified metrics preserved exactly: binary F1 0.8902 / ROC-AUC 0.9826 / PR-AUC 0.9873; multiclass macro-F1 0.5197 / weighted 0.7856; anomaly ROC-AUC 0.7963 / P@1000 0.981 (reproduced with max |Δ| = 0.0).
+- Remaining risks: train-mode notebook cells are verbatim ports (executed only in verify mode — sanctioned lightweight mode); LLM features fall back deterministically outside the sandbox; engine.log/frontend.log referenced in README are runtime-generated.

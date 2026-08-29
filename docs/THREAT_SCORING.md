@@ -1,6 +1,6 @@
 # Threat Scoring (Model D)
 
-Source of truth: `ml/artifacts/model_registry.json` → `risk_config` (identical implementation in `ml/scripts/train.py::risk_score` and `mini-services/soc-engine/src/engine.ts::riskScore`).
+Source of truth: `ml/artifacts/metadata/model_registry.json` → `risk_config` (identical implementation in the master notebook's §19 `risk_score` and `mini-services/soc-engine/src/engine.ts::riskScore`).
 
 ## Formula
 
@@ -48,7 +48,7 @@ Note what the formula does: high confidence and a dangerous category dominate; u
 
 ## Incident-level risk
 
-The correlation engine rescored each alert with its current `related_alerts` count; incident risk = **max event risk** over its lifetime (with the correlation boost applied per event as the incident grows). Event-level risk in the boot state uses `related_alerts = 0`; the correlation term only activates once events group into incidents. As a system-level reference (train.py, per-event with correlation = 0), the risk distribution over all 82,332 test events has mean 38.4 with cumulative counts — ≥25: 57,552 · ≥50: 34,034 · ≥75: 0 — reported for transparency in `test_evaluation.json.calibration.risk_distribution` (no event reaches the Critical band without the correlation term).
+The correlation engine rescored each alert with its current `related_alerts` count; incident risk = **max event risk** over its lifetime (with the correlation boost applied per event as the incident grows). Event-level risk in the boot state uses `related_alerts = 0`; the correlation term only activates once events group into incidents. As a system-level reference (master notebook §19, per-event with correlation = 0), the risk distribution over all 82,332 test events has mean 38.4 with cumulative counts — ≥25: 57,552 · ≥50: 34,034 · ≥75: 0 — reported for transparency in `test_evaluation.json.calibration.risk_distribution` (no event reaches the Critical band without the correlation term).
 
 ## Configurability & rationale
 

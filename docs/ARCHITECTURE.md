@@ -4,7 +4,7 @@
 
 ```
 ┌─────────────────────────── Python (offline) ───────────────────────────┐
-│ ml/scripts/train.py (seed 42, resumable, 2-CPU/4GB-safe)               │
+│ notebooks/CipherMind_Model_Training_and_Evaluation.ipynb             │
 │  1 data validation      7 IsolationForest (normal-only)                │
 │  2 feature fit          8 KMeans k=8 + PCA clustering                  │
 │  3 model comparison     9 TreeSHAP global importance                   │
@@ -16,7 +16,7 @@
                 ▼
 ┌────────────────── soc-engine (Bun, port 3010) ─────────────────────────┐
 │ artifacts.ts  loads registry, model dumps, config, caches              │
-│ features.ts   FeaturePipeline mirroring ml/training/features.py        │
+│ features.ts   FeaturePipeline implementing preprocessor/feature_config│
 │ lgbm.ts       LightGBM tree walker (binary + multiclass, Saabas)       │
 │ iforest.ts    IsolationForest paper-formula scorer + normalization     │
 │ engine.ts     per-event orchestration: A→B→C→D + explanations          │
@@ -36,7 +36,7 @@
 
 ## Data flow
 
-1. **Train (Python):** 45-column CSVs → `FeatureBuilder` (fit on train only) → 54 features: 39 raw numeric (median-imputed; `log1p` on the 24 columns with |skew| > 3), 12 derived ratios, 3 ordinal categoricals with `__unknown__` fallback. Everything reusable is exported as JSON (`ml/artifacts/model_registry.json` pins hyperparameters, calibration, threshold, risk config).
+1. **Train (Python):** 45-column CSVs → `FeatureBuilder` (fit on train only) → 54 features: 39 raw numeric (median-imputed; `log1p` on the 24 columns with |skew| > 3), 12 derived ratios, 3 ordinal categoricals with `__unknown__` fallback. Everything reusable is exported as JSON (`ml/artifacts/metadata/model_registry.json` pins hyperparameters, calibration, threshold, risk config).
 2. **Boot (soc-engine):** loads the JSON package, scores a 12,000-event stratified sample of the official test set **live through the real models** (never cached predictions), correlates it into incidents, builds the Command Center dashboard.
 3. **Serve:** every API response (dashboard, incidents, patterns, explain, predict, replay ticks) is computed on demand by the same engine; the UI polls `/api/health` every 30 s and degrades gracefully while the engine is down.
 4. **Replay:** 903 deterministic test rows with simulated timestamps are pre-scored, then streamed over socket.io in 300 ms ticks (virtual time × speed); a cursor-based REST snapshot endpoint backs up the websocket.
@@ -51,7 +51,7 @@ s(x) = 2^( −E(h(x)) / c(n) ),   E(h) = mean over trees of ( depth(x) + c(n_lea
 
 with `c(n) = 2(ln(n−1) + γ) − 2(n−1)/n`, over serialized sklearn trees (`c_n = 13.0174` for the 1024-row subsample). The raw score is mapped to a deterministic 0–100 scale by piecewise-linear interpolation over **training-normal percentile anchors** stored in `models/isolation_forest.json` (p50=0.3978→15, p90=0.4846→40, p99=0.5908→70, p999=0.6541→90).
 
-**Verification.** `ml/scripts/validate_ts_engine.py` sends 10 deterministic, diverse test rows (one per ground-truth category) to `POST /api/predict/batch` and compares against Python LightGBM + the same Platt/temperature transform: **all 10 rows match** — calibrated probability identical within 1e-4 (4 decimal places), verdict and predicted category identical on every row.
+**Verification.** `tests/validate_ts_engine.py` sends 13 deterministic, diverse test rows (4 normals + one per ground-truth category) to `POST /api/predict/batch` and compares against Python LightGBM + the same Platt/temperature transform: **all rows match** — calibrated probability identical within 1e-4 (4 decimal places), verdict and predicted category identical on every row.
 
 **Saabas path attributions** (live local explanations for arbitrary events): for each tree, walking root→leaf, each split attributes `child_value − node_value` to the split feature (`internal_value` = expected value at the node). The per-tree deltas telescope, so
 

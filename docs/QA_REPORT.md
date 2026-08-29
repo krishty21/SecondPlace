@@ -4,11 +4,11 @@ QA performed on the running system (soc-engine :3010, Next.js :3000, artifacts a
 
 ## 1. Dataset validation
 
-`ml/scripts/analyze_dataset.py` + train-time assertions: schema OK on both files (45 columns), train/test schema match, 0 duplicate rows, 0 missing/infinite values, **0 label↔attack-category mismatches** in both splits, unseen-category scan (state: ACC, CLO) → unknown-bucket handling confirmed. Results committed in `ml/artifacts/metrics/dataset_profile.json`.
+dataset validation (master notebook `notebooks/CipherMind_Model_Training_and_Evaluation.ipynb` §04; originally `ml/scripts/analyze_dataset.py`, retired) + train-time assertions: schema OK on both files (45 columns), train/test schema match, 0 duplicate rows, 0 missing/infinite values, **0 label↔attack-category mismatches** in both splits, unseen-category scan (state: ACC, CLO) → unknown-bucket handling confirmed. Results committed in `ml/artifacts/metrics/dataset_profile.json`.
 
 ## 2. TypeScript-vs-Python cross-validation
 
-`python3 ml/scripts/validate_ts_engine.py` against the live engine: 10 deterministic rows (one per ground-truth category incl. Normal) POSTed to `/api/predict/batch` and compared with Python LightGBM + Platt/temperature transforms. **All 10 rows match** — calibrated probability identical within 1e-4 (4 decimal places), verdict + predicted category identical on every row. Saabas identity (baseline + Σcontribs == raw score) verified separately during development.
+`python3 tests/validate_ts_engine.py` against the live engine: 13 deterministic rows (4 normals + one per ground-truth category) POSTed to `/api/predict/batch` and compared with Python LightGBM + Platt/temperature transforms. **All rows match** — calibrated probability identical within 1e-4 (4 decimal places), verdict + predicted category identical on every row. Saabas identity (baseline + Σcontribs == raw score) verified separately during development.
 
 ## 3. API endpoint verification
 

@@ -1,6 +1,6 @@
 # Dataset Analysis — UNSW-NB15 (as supplied)
 
-Generated automatically by `ml/scripts/analyze_dataset.py`. Source of truth: the uploaded ZIP only.
+Generated automatically by the master notebook (`notebooks/CipherMind_Model_Training_and_Evaluation.ipynb` §03–§04; originally `ml/scripts/analyze_dataset.py`, now retired). Source of truth: the uploaded ZIP only.
 
 ## Files & Shape
 

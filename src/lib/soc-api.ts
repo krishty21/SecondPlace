@@ -2,8 +2,10 @@
  * CipherMind Sentinel — typed API client for the soc-engine (port 3010)
  * and the Next.js LLM endpoints (same origin).
  *
- * Gateway requirement: ML engine requests MUST use relative paths with
- * `XTransformPort=3010` — never absolute URLs.
+ * Engine routing:
+ * - Sandbox/preview (behind the gateway): relative paths + `XTransformPort=3010`.
+ * - Local development: `NEXT_PUBLIC_ENGINE_URL=http://localhost:3010` in `.env`
+ *   makes the client call the engine directly (CORS is enabled engine-side).
  */
 
 // ------------------------------------------------------------------ types
@@ -376,9 +378,18 @@ export class EngineError extends Error {
   }
 }
 
+/**
+ * Engine base URL resolution:
+ * - Sandbox/preview (behind the gateway): requests stay RELATIVE and carry
+ *   `?XTransformPort=3010` so the gateway forwards them to the soc-engine.
+ * - Local development: set `NEXT_PUBLIC_ENGINE_URL=http://localhost:3010` in
+ *   `.env` and the client calls the engine directly (the engine enables CORS).
+ */
 const ENGINE_PORT = "3010";
+const ENGINE_BASE = (process.env.NEXT_PUBLIC_ENGINE_URL ?? "").replace(/\/+$/, "");
 
 function engineUrl(path: string): string {
+  if (ENGINE_BASE) return `${ENGINE_BASE}${path}`;
   const sep = path.includes("?") ? "&" : "?";
   return `${path}${sep}XTransformPort=${ENGINE_PORT}`;
 }

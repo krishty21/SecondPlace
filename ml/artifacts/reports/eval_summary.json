@@ -111,8 +111,8 @@
     "total_training_seconds": 146.7
   },
   "how_to_run": {
-    "train": "python3 ml/scripts/train.py",
-    "inference_service": "cd mini-services/soc-engine && bun run dev (port 3010)"
+    "train": "notebooks/CipherMind_Model_Training_and_Evaluation.ipynb (MODE='train')",
+    "inference_service": "mini-services/soc-engine: bun install && bun run dev (port 3010)"
   },
   "artifact_locations": "ml/artifacts/**",
   "demo_flow": "Open the SOC UI -> Command Center (boot state) -> Live Replay (campaign escalation) -> Incident Investigation -> Explainability Center"

@@ -57,7 +57,7 @@ Normalized scores separate normals (mean 24.7, p90 43.9) from attacks (mean 41.4
 
 Python batch inference **2,645.1 ms per 10,000 events** (train-side reference). TypeScript runtime (live `/api/health` engineStats): 12,000-event boot in 18.7 s (**642 events/s**), single-event benchmark **1.7 ms**, end-to-end `POST /api/predict` 3–5 ms. Artifacts: binary 74.3 MB, multiclass 54.7 MB, IsolationForest 2.7 MB, SHAP cache 2.3 MB (JSON). Training: 146.7 s final resumable pass (cold run ≈ 15 min on 2 CPUs).
 
-## Leakage-prevention checklist (implemented in `ml/scripts/train.py`)
+## Leakage-prevention checklist (implemented in the master notebook `notebooks/CipherMind_Model_Training_and_Evaluation.ipynb`; originally `ml/scripts/train.py`, retired)
 
 1. `id` excluded from features (identifier; collides across files — [DATASET.md](DATASET.md)).
 2. Targets `label`/`attack_cat` excluded from inputs; schema asserted on load.
@@ -70,8 +70,9 @@ Python batch inference **2,645.1 ms per 10,000 events** (train-side reference). 
 ## How to reproduce
 
 ```bash
-python3 ml/scripts/train.py                 # retrains everything (resumable; artifacts committed)
-python3 ml/scripts/validate_ts_engine.py    # needs soc-engine on :3010 — 10 rows, all must match
+# full retraining (MODE='train') or verification (MODE='verify') — the canonical ML workflow
+jupyter execute notebooks/CipherMind_Model_Training_and_Evaluation.ipynb   # or open in Jupyter and Run All
+python3 tests/validate_ts_engine.py     # needs soc-engine on :3010 — all rows must match
 ```
 
 Metrics land in `ml/artifacts/metrics/` (deterministic given seed 42 and the pinned environment). The cross-validation prints per-row `OK` lines and exits non-zero on any mismatch.

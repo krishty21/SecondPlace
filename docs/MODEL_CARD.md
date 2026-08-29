@@ -1,6 +1,6 @@
 # Model Card
 
-Hyperparameters quoted from `ml/artifacts/model_registry.json`; metrics from `ml/artifacts/metrics/test_evaluation.json` (official test set, scored **exactly once** after model freeze).
+Hyperparameters quoted from `ml/artifacts/metadata/model_registry.json`; metrics from `ml/artifacts/metrics/test_evaluation.json` (official test set, scored **exactly once** after model freeze).
 
 **Shared inputs (Models A–C).** 54 features per flow: 39 raw numeric (train-median imputation; `log1p` on the 24 columns with training |skew| > 3), 12 derived ratios, 3 ordinal-encoded categoricals with `__unknown__` fallback (handles test's unseen `ACC`/`CLO` states). Targets: `label` (A), `attack_cat` (B). `id` excluded.
 

@@ -1,0 +1,54 @@
+{
+  "mode": "verify",
+  "executed_at": "2026-08-29T15:21:43+0000",
+  "models": "loaded from shipped native .txt files (no retraining)",
+  "feature_pipeline": "re-fitted on training CSV \u2014 reproduces shipped feature_config.json exactly",
+  "logistic_baseline": {
+    "f1": 0.954843940008107,
+    "roc_auc": 0.9786272117773489
+  },
+  "test_metrics_binary": {
+    "accuracy": 0.8662609920808434,
+    "precision": 0.812412386899452,
+    "recall": 0.9844039530574429,
+    "f1": 0.8901766389722824,
+    "roc_auc": 0.9826229699323431,
+    "pr_auc": 0.9872715602990496,
+    "specificity": 0.015596046942557134,
+    "false_positive_rate": 0.2784864864864865
+  },
+  "test_metrics_multiclass": {
+    "accuracy": 0.7710853617062624,
+    "macro_f1": 0.5197266716425247,
+    "weighted_f1": 0.7856359734308712,
+    "balanced_accuracy": 0.5585427501745444
+  },
+  "test_metrics_anomaly": {
+    "roc_auc_vs_label": 0.7962908162839448,
+    "precision_at_1000": 0.981
+  },
+  "parity_max_abs_delta": 0.0,
+  "artifacts_verified": [
+    "models/binary_lightgbm.txt",
+    "models/binary_lightgbm.json",
+    "models/multiclass_lightgbm.txt",
+    "models/multiclass_lightgbm.json",
+    "models/isolation_forest.json",
+    "preprocessor/feature_config.json",
+    "preprocessor/clustering.json",
+    "explainability/shap_cache.json",
+    "replay/demo_sequence.json",
+    "replay/boot_sample.json",
+    "metrics/model_comparison.json",
+    "metrics/feature_ablation.json",
+    "metrics/calibration.json",
+    "metrics/test_evaluation.json",
+    "metrics/shap_global.json",
+    "metrics/multiclass_gain.json",
+    "metrics/operational.json",
+    "metrics/dataset_profile.json",
+    "metrics/train_prevalence.json",
+    "reports/eval_summary.json",
+    "metadata/model_registry.json"
+  ]
+}

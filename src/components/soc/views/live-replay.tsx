@@ -131,7 +131,11 @@ export function LiveReplay({ onOpenIncident }: { onOpenIncident: (incident: Inci
 
   const ensureSocket = useCallback((): Socket => {
     if (socketRef.current) return socketRef.current;
-    const sock = io("/?XTransformPort=3010", {
+    // Gateway mode (sandbox/preview): relative path + XTransformPort=3010.
+    // Local mode: NEXT_PUBLIC_ENGINE_URL points straight at the engine
+    // (the engine enables CORS for the socket.io handshake).
+    const engineBase = (process.env.NEXT_PUBLIC_ENGINE_URL ?? "").replace(/\/+$/, "");
+    const sock = io(engineBase ? engineBase : "/?XTransformPort=3010", {
       transports: ["websocket", "polling"],
       reconnectionAttempts: 5,
       timeout: 8000,
