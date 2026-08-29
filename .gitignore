@@ -30,12 +30,11 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files — use .env.example as reference
 .env*
 
 # vercel
 .vercel
-
 
 # typescript
 *.tsbuildinfo
@@ -46,9 +45,24 @@ local-*
 *.log
 dev.log
 dev.out.log
+server.log
+
+# skills / internal
+/skills/
 test
 prompt
 
-server.log
-# Skills directory
-/skills/
+# lockfiles (use npm install fresh on deploy)
+package-lock.json
+
+# prisma local db
+prisma/db/
+
+# soc-engine (local Bun service — not deployed to Vercel)
+mini-services/soc-engine/node_modules/
+mini-services/soc-engine/bun.lock
+
+# ml artifacts — large files, stored in repo intentionally; exclude local scratch
+ml/artifacts/model_registry.json
+ml/scripts/
+ml/training/

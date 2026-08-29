@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   keywords: ["SOC", "UNSW-NB15", "intrusion detection", "explainable AI", "security operations"],
   authors: [{ name: "CipherMind AI" }],
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: "/logo.svg",
   },
   openGraph: {
     title: "CipherMind Sentinel — AI SOC Copilot",

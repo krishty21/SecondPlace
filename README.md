@@ -10,14 +10,10 @@ with a live SOC interface: real-time replay streaming, incident timelines with
 epistemics labels, behavioral pattern exploration, an explainability center
 (SHAP + calibration), and an LLM-backed AI analyst with a deterministic
 fallback.
-
 > **Everything in this repository runs from the shipped, pre-trained model
 > artifacts. Nothing retrains at runtime.**
-
 ---
-
 ## Table of contents
-
 1. [Final metrics (verified)](#final-metrics-verified)
 2. [Architecture](#architecture)
 3. [Project structure](#project-structure)
