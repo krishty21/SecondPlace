@@ -124,11 +124,6 @@ export function SocApp() {
               </button>
             ))}
           </nav>
-
-          {/* engine status */}
-          <div className="flex shrink-0 items-center gap-2">
-            <EngineStatus />
-          </div>
         </div>
       </header>
 
@@ -168,18 +163,6 @@ export function SocApp() {
         </AnimatePresence>
       </main>
 
-      {/* ---------------------------------------------------------- footer */}
-      <footer className="mt-auto border-t border-border/60 bg-background/70">
-        <div className="mx-auto flex max-w-[1600px] flex-col gap-1 px-4 py-4 text-[11px] leading-relaxed text-muted-foreground sm:flex-row sm:items-center sm:justify-between lg:px-6">
-          <p>
-            <span className="font-semibold text-foreground/70">CipherMind Sentinel</span> — CipherMind AI &apos;26 ·
-            UNSW-NB15
-          </p>
-          <p className="max-w-2xl sm:text-right">
-            Model outputs are research prototypes; timestamps &amp; entity labels are SIMULATED replay metadata.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }
